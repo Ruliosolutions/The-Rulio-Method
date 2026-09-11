@@ -1,0 +1,18 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd engine && npm run build",
+  "outputDirectory": "engine/.next",
+  "installCommand": "cd engine && npm install",
+  "framework": "nextjs",
+  "regions": ["fra1"],
+  "crons": [
+    {
+      "path": "/api/cron/workshop-emails",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/trial-reminders",
+      "schedule": "0 9 * * *"
+    }
+  ]
+}

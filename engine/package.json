@@ -1,0 +1,46 @@
+{
+  "name": "rulio-engine",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Rulio Engine — adaptive binaural-beat & solfeggio frequency app + workshop funnel API.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "setup:stripe": "tsx scripts/setup-stripe.ts",
+    "setup:stripe:all": "tsx scripts/setup-stripe-all.ts",
+    "pages:build": "npx @cloudflare/next-on-pages@latest",
+    "pages:deploy": "wrangler pages deploy .vercel/output/static --project-name rulio-engine --commit-dirty=true"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.1",
+    "next": "^14.2.5",
+    "posthog-node": "^5.21.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "resend": "^4.0.0",
+    "stripe": "^16.12.0",
+    "tone": "^15.0.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.5.0",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.5",
+    "postcss": "^8.4.40",
+    "tailwindcss": "^3.4.7",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0",
+    "wrangler": "^3.114.17"
+  }
+}

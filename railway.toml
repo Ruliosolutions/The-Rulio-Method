@@ -1,0 +1,29 @@
+# Railway.app configuration for the Rulio Engine
+# Docs: https://docs.railway.app/reference/config-as-code
+#
+# Deploy:
+#   1. Install Railway CLI: npm i -g @railway/cli
+#   2. Login: railway login
+#   3. Init: railway init
+#   4. Set env vars: railway variables set KEY=value
+#   5. Deploy: railway up
+#
+# Or use the dashboard:
+#   https://railway.app/new
+
+[build]
+builder = "NIXPACKS"
+buildCommand = "cd engine && npm ci && npm run build"
+
+[deploy]
+startCommand = "cd engine && npm start"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+numReplicas = 1
+
+# Cron job — daily email firing
+# Use Railway Cron: https://docs.railway.app/features/cron-jobs
+# Schedule: 0 9 * * * (daily at 09:00 UTC)
+# Command:  curl -X POST $ENGINE_URL/api/cron/workshop-emails -H "Authorization: Bearer $CRON_SECRET"

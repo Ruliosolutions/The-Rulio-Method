@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rulio Shop — Solfeggio Tools & Audio Packs</title>
+  <meta name="description" content="Direct download. 9 solfeggio cards, qi practice log, the 30-page ebook, and 14 audio sessions. No subscription required." />
+  <meta name="theme-color" content="#0c0c0e" />
+  <link rel="icon" href="https://rulio.app/rulio-favicon-256.png" />
+  <style>
+    :root {
+      --bg: #0c0c0e;
+      --ink: #F4F1EA;
+      --muted: #a1a1aa;
+      --blue: #5BB8FF;
+      --cyan: #8FD1FF;
+      --line: rgba(255,255,255,0.10);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bg); color: var(--ink); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; }
+    .brand img { width: 28px; height: 28px; border-radius: 6px; }
+    .nav-links { display: flex; gap: 24px; font-size: 14px; color: var(--muted); }
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--ink); text-decoration: none; }
+    main { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .hero { padding: 64px 0 48px; }
+    .kicker { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+    h1 { font-family: "Fraunces", Georgia, serif; font-weight: 300; font-size: clamp(36px, 6vw, 56px); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 16px; }
+    .lede { color: var(--muted); font-size: 18px; max-width: 640px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; padding-bottom: 64px; }
+    .card {
+      display: block; position: relative;
+      padding: 24px; border-radius: 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover { border-color: rgba(91,184,255,0.6); transform: translateY(-2px); text-decoration: none; }
+    .card.featured {
+      border-color: var(--blue);
+      background: linear-gradient(135deg, var(--bg) 0%, #0c1822 100%);
+    }
+    .tag {
+      display: inline-block; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 4px 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.05); color: var(--muted);
+    }
+    .tag.featured { background: rgba(91,184,255,0.2); color: var(--cyan); }
+    .meta { display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px; }
+    .featured-mark { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue); }
+    .card h2 { font-size: 20px; font-weight: 500; margin-bottom: 8px; color: var(--ink); }
+    .card p { font-size: 14px; color: var(--muted); margin-bottom: 16px; min-height: 3.5em; }
+    .price-row { display: flex; align-items: baseline; justify-content: space-between; }
+    .price { font-size: 24px; font-weight: 300; }
+    .price .was {
+      font-size: 14px; color: var(--muted);
+      text-decoration: line-through;
+      text-decoration-color: var(--muted);
+      text-decoration-thickness: 1.5px;
+      margin-left: 10px;
+      opacity: 0.7;
+    }
+    .cta { font-size: 14px; color: var(--blue); }
+    .card:hover .cta { transform: translateX(4px); display: inline-block; transition: transform 0.2s; }
+    .footer-info { padding: 24px; border-radius: 16px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); margin-top: 32px; }
+    .footer-info h3 { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-weight: 500; }
+    .footer-info ul { list-style: none; font-size: 14px; color: var(--ink); }
+    .footer-info li { padding: 2px 0; }
+    .disclaimer { font-size: 12px; color: var(--muted); max-width: 720px; margin: 32px auto; text-align: center; }
+    .upsell { text-align: center; font-size: 13px; color: var(--muted); margin-top: 24px; }
+    .upsell a { color: var(--blue); }
+    .capture {
+      max-width: 560px; margin: 56px auto 0; padding: 32px;
+      background: linear-gradient(135deg, rgba(91,184,255,0.08), rgba(143,209,255,0.04));
+      border: 1px solid rgba(91,184,255,0.25);
+      border-radius: 16px;
+      text-align: center;
+    }
+    .capture h3 { font-family: "Fraunces", Georgia, serif; font-size: 22px; font-weight: 400; margin: 0 0 8px; }
+    .capture p { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+    .capture-form { display: flex; gap: 8px; max-width: 420px; margin: 0 auto; }
+    .capture-form input[type=email] {
+      flex: 1; padding: 12px 16px; border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: var(--ink); font-size: 14px; font-family: inherit;
+    }
+    .capture-form input[type=email]:focus { outline: none; border-color: var(--blue); }
+    .capture-form button {
+      padding: 12px 20px; border-radius: 8px;
+      background: var(--blue); color: var(--bg);
+      border: none; font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .capture-form button:hover { transform: translateY(-1px); }
+    .capture small { display: block; margin-top: 12px; color: var(--muted); font-size: 11px; }
+    .testimonials {
+      max-width: 1100px; margin: 64px auto 0; padding: 0 24px;
+    }
+    .testimonials h3 {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 14px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); text-align: center; margin-bottom: 24px;
+    }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .testi {
+      padding: 20px; border-radius: 12px;
+      background: rgba(255,255,255,0.02); border: 1px solid var(--line);
+    }
+    .testi p { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 0 0 12px; }
+    .testi cite { font-size: 12px; color: var(--muted); font-style: normal; }
+    /* Hide platform branding badge */
+    #minimax-floating-ball { display: none !important; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/">
+      <img src="https://rulio.app/rulio-app-icon-1024.png" alt="Rulio" />
+      <span>Rulio</span>
+    </a>
+    <div class="nav-links">
+      <a href="https://rulio.app">Home</a>
+      <a href="https://rulio.app/pro">Pro</a>
+      <a href="https://rulio.app/qi">/qi</a>
+      <a href="mailto:hello@rulio.io">Contact</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <p class="kicker">Rulio Shop · Direct downloads</p>
+      <h1>The 5-minute solfeggio toolkit.</h1>
+      <p class="lede">No subscription. Buy what you need, download it, use it tonight. Not a medical device, not a treatment — a practice tool.</p>
+    </section>
+
+    <section class="grid">
+      <a class="card" href="https://buy.stripe.com/3cIeVdbq53qS9cKgx4dwc02" target="_blank" rel="noopener">
+        <div class="meta">
+          <span class="tag">Printable PDF</span>
+        </div>
+        <h2>9 Solfeggio Frequency Cards</h2>
+        <p>A5 + US Letter. 9 cards, 9 frequencies, one use case each. Tape them to your desk, pick one before your worst hour.</p>
+        <div class="price-row">
+          <div class="price">€9</div>
+          <span class="cta">Buy →</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://buy.stripe.com/8x2aEX2Tz2mO2Om94Cdwc04" target="_blank" rel="noopener">
+        <div class="meta">
+          <span class="tag">Printable PDF</span>
+        </div>
+        <h2>7-Day Qi Practice Log</h2>
+        <p>Track 5-minute sessions for a week. Columns: day, time, frequency, state before, state after, what you noticed.</p>
+        <div class="price-row">
+          <div class="price">€7</div>
+          <span class="cta">Buy →</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://buy.stripe.com/6oU5kD3XDbXocoW6Wudwc01" target="_blank" rel="noopener">
+        <div class="meta">
+          <span class="tag">30+ page PDF</span>
+        </div>
+        <h2>Rulio Qi Method (ebook)</h2>
+        <p>The full 5-minute solfeggio protocol. Why it works, when to use each frequency, the 7-day reset, and the honest caveats.</p>
+        <div class="price-row">
+          <div class="price">€19</div>
+          <span class="cta">Buy →</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://buy.stripe.com/5kQ9ATfGl3qSgFc3Kidwc00" target="_blank" rel="noopener">
+        <div class="meta">
+          <span class="tag">110 min · 14 MP3s</span>
+        </div>
+        <h2>14-Day Solfeggio Audio Pack</h2>
+        <p>12 free 5-min sessions + 2 extended 25-min deep-work sessions. 174, 285, 396, 417, 528, 639, 741, 852, 963 Hz. Stereo only.</p>
+        <div class="price-row">
+          <div class="price">€29</div>
+          <span class="cta">Buy →</span>
+        </div>
+      </a>
+
+      <a class="card featured" href="https://buy.stripe.com/dRmfZh79P2mOfB8a8Gdwc03" target="_blank" rel="noopener">
+        <div class="meta">
+          <span class="tag featured">Save €15 · 40% off buying solo</span>
+          <span class="featured-mark">Most popular</span>
+        </div>
+        <h2>Complete Rulio Bundle</h2>
+        <p>All 4 products in one zip. Cards, log, ebook, and 14 audio sessions. The full 5-minute protocol toolkit.</p>
+        <div class="price-row">
+          <div class="price">€49<span class="was">€64</span></div>
+          <span class="cta">Buy →</span>
+        </div>
+      </a>
+    </section>
+
+    <div class="footer-info">
+      <h3>What you get after checkout</h3>
+      <ul>
+        <li>· Secure payment via Stripe (cards, Apple Pay, Google Pay)</li>
+        <li>· Instant download links sent to your email</li>
+        <li>· No account, no subscription, no spam</li>
+        <li>· Lifetime access to your files</li>
+      </ul>
+    </div>
+
+    <p class="disclaimer">
+      Not a medical device. Not a treatment for any condition. Solfeggio frequencies are a relaxation and focus tool, used the same way music is used. If you have a serious condition, see a professional.
+    </p>
+
+    <p class="upsell">
+      Want the adaptive experience? <a href="https://rulio.app/pro">Try Engine Pro free for 7 days →</a>
+    </p>
+
+    <div class="testimonials">
+      <h3>What people notice</h3>
+      <div class="testi-grid">
+        <div class="testi">
+          <p>"I run the 3 PM protocol on days with back-to-back calls. 528Hz for 5 minutes. I stop drifting."</p>
+          <cite>— Marta, founder, Lisbon</cite>
+        </div>
+        <div class="testi">
+          <p>"The cards live on my desk. Pick a frequency by feel, not by thinking. Easier than opening an app."</p>
+          <cite>— Jonas, eng manager, Berlin</cite>
+        </div>
+        <div class="testi">
+          <p>"Skeptical on day 1. By day 4 I noticed the 4 PM wall didn't happen. I'm a convert."</p>
+          <cite>— Priya, PM, London</cite>
+        </div>
+      </div>
+    </div>
+
+    <div class="capture">
+      <h3>Not ready to buy?</h3>
+      <p>Get the 5-minute solfeggio protocol — the same one I use — by email. Free.</p>
+      <form class="capture-form" action="https://rulio.substack.com/subscribe" method="GET" target="_blank">
+        <input type="email" name="email" placeholder="you@work.email" required />
+        <button type="submit">Send it →</button>
+      </form>
+      <small>Free 5-min solfeggio protocol by email. No spam.</small>
+    </div>
+  </main>
+</body>
+</html>

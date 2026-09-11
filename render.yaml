@@ -1,0 +1,77 @@
+# Render.com Blueprint for the Rulio Engine
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Deploy:
+#   1. Push to GitHub
+#   2. Connect repo at https://dashboard.render.com/blueprints
+#   3. Render auto-detects this file and deploys
+#   4. Set env vars in the Render dashboard (or via `render env`)
+#
+# Or use the CLI:
+#   render blueprint launch
+
+services:
+  - type: web
+    name: rulio-engine
+    runtime: node
+    plan: starter   # $7/mo — 512 MB RAM, 0.5 CPU. Upgrade to "standard" for production.
+    region: frankfurt  # EU, close to Brussels
+    branch: main
+    rootDir: engine
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: NEXT_PUBLIC_URL
+        value: https://rulio-engine.onrender.com  # change after custom domain
+      - key: STRIPE_SECRET_KEY
+        sync: false   # set in Render dashboard
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRICE_WORKSHOP_STANDARD
+        sync: false
+      - key: STRIPE_PRICE_WORKSHOP_BOOK
+        sync: false
+      - key: STRIPE_PRICE_WORKSHOP_BUNDLE
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: POSTHOG_API_KEY
+        sync: false
+      - key: POSTHOG_HOST
+        value: https://eu.i.posthog.com
+      - key: CRON_SECRET
+        generateValue: true
+      - key: WORKSHOP_ZOOM_LINK
+        sync: false
+      - key: CALENDLY_AUDIT_URL
+        value: https://calendly.com/rulio/energy-audit
+
+  # Cron job — daily email firing
+  - type: cron
+    name: rulio-workshop-emails
+    runtime: node
+    schedule: "0 9 * * *"
+    buildCommand: echo "noop"
+    startCommand: |
+      curl -X POST https://rulio-engine.onrender.com/api/cron/workshop-emails \
+        -H "Authorization: Bearer $CRON_SECRET"
+    envVars:
+      - key: CRON_SECRET
+        fromService:
+          type: web
+          name: rulio-engine
+          property: CRON_SECRET

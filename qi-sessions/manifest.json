@@ -1,0 +1,255 @@
+{
+  "version": "1.0.0",
+  "title": "The Rulio Qi Method \u2014 12 Free Sessions",
+  "description": "Binaural-beat and solfeggio frequency sessions for sleep, focus, energy, and creative flow.",
+  "disclaimer": "Not a medical device. Not a treatment for any condition. Headphones required.",
+  "sample_rate": 44100,
+  "bit_depth": 16,
+  "channels": 2,
+  "mp3_bitrate": "192k",
+  "format": "mp3",
+  "generated_by": "qi-sessions/generate.py",
+  "sessions": [
+    {
+      "id": "01-sleep",
+      "title": "Sleep",
+      "chapter": 5,
+      "solfeggio_hz": [
+        528.0
+      ],
+      "carrier_hz": 200.0,
+      "binaural_offset_hz": 0.5,
+      "sub_bass_hz": 40.0,
+      "length_min": 5,
+      "brainwave_band": "delta",
+      "tier": "free",
+      "instruction": "Lie down. Close your eyes. Don't try to fall asleep \u2014 let the tones pull you there.",
+      "filename": "01-sleep.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "02-deep-sleep",
+      "title": "Deep Sleep",
+      "chapter": 5,
+      "solfeggio_hz": [
+        285.0
+      ],
+      "carrier_hz": 180.0,
+      "binaural_offset_hz": 1.0,
+      "sub_bass_hz": 35.0,
+      "length_min": 5,
+      "brainwave_band": "delta",
+      "tier": "free",
+      "instruction": "For the middle of the night, when you wake at 3am and need to drop back under. Headphones on, eyes closed.",
+      "filename": "02-deep-sleep.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "03-morning-reset",
+      "title": "Morning Reset",
+      "chapter": 6,
+      "solfeggio_hz": [
+        396.0
+      ],
+      "carrier_hz": 220.0,
+      "binaural_offset_hz": 4.0,
+      "sub_bass_hz": 50.0,
+      "length_min": 5,
+      "brainwave_band": "theta",
+      "tier": "free",
+      "instruction": "First 5 minutes of your day. Before phone. Before mirror. Sit, headphones, breathe.",
+      "filename": "03-morning-reset.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "04-anxiety-release",
+      "title": "Anxiety Release",
+      "chapter": 7,
+      "solfeggio_hz": [
+        417.0
+      ],
+      "carrier_hz": 220.0,
+      "binaural_offset_hz": 6.0,
+      "sub_bass_hz": 55.0,
+      "length_min": 5,
+      "brainwave_band": "low alpha",
+      "tier": "free",
+      "instruction": "When the chest tightens and the to-do list starts to scroll in your head. Anywhere. Headphones in, eyes soft.",
+      "filename": "04-anxiety-release.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "05-focus",
+      "title": "Focus",
+      "chapter": 8,
+      "solfeggio_hz": [
+        417.0
+      ],
+      "carrier_hz": 220.0,
+      "binaural_offset_hz": 12.0,
+      "sub_bass_hz": 0,
+      "length_min": 5,
+      "brainwave_band": "alpha",
+      "tier": "free",
+      "instruction": "Deep work block. Use between Pomodoros to keep the rhythm going when the timer ends.",
+      "filename": "05-focus.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "05b-focus-25",
+      "title": "Focus (25 min)",
+      "chapter": 8,
+      "solfeggio_hz": [
+        417.0
+      ],
+      "carrier_hz": 220.0,
+      "binaural_offset_hz": 12.0,
+      "sub_bass_hz": 0,
+      "length_min": 25,
+      "brainwave_band": "alpha",
+      "tier": "extended",
+      "instruction": "The long version. For full deep-work blocks. Pomodoro is 25 min \u2014 match the rhythm.",
+      "filename": "05b-focus-25.mp3",
+      "size_bytes": 36001376
+    },
+    {
+      "id": "06-deep-work",
+      "title": "Deep Work",
+      "chapter": 8,
+      "solfeggio_hz": [
+        417.0,
+        852.0
+      ],
+      "carrier_hz": 220.0,
+      "binaural_offset_hz": 14.0,
+      "sub_bass_hz": 60.0,
+      "length_min": 5,
+      "brainwave_band": "low beta",
+      "tier": "free",
+      "instruction": "For the hardest problem of the day. Headphones mandatory. Close every other tab.",
+      "filename": "06-deep-work.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "06b-deep-work-25",
+      "title": "Deep Work (25 min)",
+      "chapter": 8,
+      "solfeggio_hz": [
+        417.0,
+        852.0
+      ],
+      "carrier_hz": 220.0,
+      "binaural_offset_hz": 14.0,
+      "sub_bass_hz": 60.0,
+      "length_min": 25,
+      "brainwave_band": "low beta",
+      "tier": "extended",
+      "instruction": "The long version. 25 minutes of low-beta 14 Hz with the 417+852 stack. Headphones mandatory. Close every other tab. Don't touch the keyboard until the timer ends.",
+      "filename": "06b-deep-work-25.mp3",
+      "size_bytes": 36001376
+    },
+    {
+      "id": "07-energy",
+      "title": "Second Wind",
+      "chapter": 9,
+      "solfeggio_hz": [
+        528.0
+      ],
+      "carrier_hz": 200.0,
+      "binaural_offset_hz": 8.0,
+      "sub_bass_hz": 0,
+      "length_min": 5,
+      "brainwave_band": "alpha",
+      "tier": "free",
+      "instruction": "3pm dip. Don't reach for the third coffee. Headphones, sit upright, breathe twice as long out as in.",
+      "filename": "07-energy.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "08-creative-spark",
+      "title": "Creative Spark",
+      "chapter": 10,
+      "solfeggio_hz": [
+        396.0,
+        741.0
+      ],
+      "carrier_hz": 220.0,
+      "binaural_offset_hz": 6.0,
+      "sub_bass_hz": 0,
+      "length_min": 5,
+      "brainwave_band": "theta",
+      "tier": "free",
+      "instruction": "Use before a brainstorm or when the blank page is staring back. Pen in hand. Don't judge what comes out.",
+      "filename": "08-creative-spark.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "09-connection",
+      "title": "Connection",
+      "chapter": 11,
+      "solfeggio_hz": [
+        639.0
+      ],
+      "carrier_hz": 200.0,
+      "binaural_offset_hz": 10.0,
+      "sub_bass_hz": 0,
+      "length_min": 5,
+      "brainwave_band": "alpha",
+      "tier": "free",
+      "instruction": "Before a hard conversation. Don't script \u2014 just listen first. The 639 puts you in the headspace where listening happens.",
+      "filename": "09-connection.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "10-intuition",
+      "title": "Intuition",
+      "chapter": 12,
+      "solfeggio_hz": [
+        741.0
+      ],
+      "carrier_hz": 200.0,
+      "binaural_offset_hz": 12.0,
+      "sub_bass_hz": 0,
+      "length_min": 5,
+      "brainwave_band": "high alpha",
+      "tier": "free",
+      "instruction": "When you have a decision to make and the spreadsheets aren't telling you anything. Sit, breathe, ask the question out loud. Listen for the next 5 minutes.",
+      "filename": "10-intuition.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "11-evening-review",
+      "title": "Evening Review",
+      "chapter": 13,
+      "solfeggio_hz": [
+        852.0
+      ],
+      "carrier_hz": 200.0,
+      "binaural_offset_hz": 14.0,
+      "sub_bass_hz": 0,
+      "length_min": 5,
+      "brainwave_band": "low beta",
+      "tier": "free",
+      "instruction": "End of day. Open the journal. Three sentences: what shipped, what didn't, what's the one thing tomorrow.",
+      "filename": "11-evening-review.mp3",
+      "size_bytes": 7201689
+    },
+    {
+      "id": "12-pre-pitch",
+      "title": "Pre-Pitch",
+      "chapter": 14,
+      "solfeggio_hz": [
+        963.0
+      ],
+      "carrier_hz": 180.0,
+      "binaural_offset_hz": 18.0,
+      "sub_bass_hz": 0,
+      "length_min": 5,
+      "brainwave_band": "beta",
+      "tier": "free",
+      "instruction": "Five minutes before the call that matters. Headphones in. Slow exhale. The 963 won't calm you down \u2014 it will sharpen you up.",
+      "filename": "12-pre-pitch.mp3",
+      "size_bytes": 7201689
+    }
+  ]
+}

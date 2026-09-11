@@ -1,0 +1,10 @@
+name = "rulio-engine"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[build]
+command = "npm run pages:build"
+
+[env.production]
+# Env vars come from the Cloudflare dashboard

@@ -1,0 +1,78 @@
+# Fly.io configuration for the Rulio Engine
+# Docs: https://fly.io/docs/reference/configuration/
+#
+# Deploy:
+#   fly launch --copy-config --name rulio-engine --region fra
+#   fly secrets set STRIPE_SECRET_KEY=sk_live_... \
+#                    STRIPE_WEBHOOK_SECRET=whsec_... \
+#                    NEXT_PUBLIC_SUPABASE_URL=https://....supabase.co \
+#                    SUPABASE_SERVICE_ROLE_KEY=eyJ... \
+#                    RESEND_API_KEY=re_... \
+#                    POSTHOG_API_KEY=phc_... \
+#                    CRON_SECRET=$(openssl rand -hex 32) \
+#                    WORKSHOP_ZOOM_LINK=https://rulio.zoom.us/j/...
+#   fly deploy
+#
+# To set up a cron job on Fly (alternative to Vercel Cron):
+#   fly machines run --schedule "0 9 * * *" <image-id> \
+#     -- curl -X POST https://rulio-engine.fly.dev/api/cron/workshop-emails \
+#          -H "Authorization: Bearer $CRON_SECRET"
+
+app = "rulio-engine"
+primary_region = "fra"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[build]
+  dockerfile = "engine/Dockerfile"
+  context = "."
+
+[env]
+  PORT = "3000"
+  NODE_ENV = "production"
+  NEXT_TELEMETRY_DISABLED = "1"
+  NEXT_PUBLIC_URL = "https://rulio-engine.fly.dev"
+
+[experimental]
+  auto_rollback = true
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 3000
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 250
+    soft_limit = 200
+
+  [[services.tcp_checks]]
+    interval = "15s"
+    timeout = "2s"
+    grace_period = "10s"
+
+  [[services.http_checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "get"
+    path = "/api/health"
+
+[deploy]
+  strategy = "rolling"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+  count = 1
