@@ -10,6 +10,7 @@ dist/build/
 .vercel/
 .wrangler/
 .tsbuildinfo
+*.tsbuildinfo
 
 # Runtime / cache
 .cache/
@@ -62,6 +63,18 @@ qi-sessions/audio/*.mp3
 
 # Deploy outputs that are just static site bundles
 dist-qi/
+dist-affiliate/
+dist-ai-coach/
+dist-booking/
+dist-funnel/
+dist-landing/
+dist-partnership/
+dist-press-kit/
+dist-ruliosolutions/
+dist-shop/
+dist-workshop/
+dist-*/_assets/
+dist-*/.vercel/
 
 # Generated PDF zips (recreate with scripts/generate-digital-products.py)
 *.zip
