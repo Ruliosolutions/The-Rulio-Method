@@ -157,23 +157,41 @@
       document.getElementById('b-studio-mrr').textContent = '€' + data.breakdown.studio.mrr.toLocaleString();
     }
 
-    function copyLink() {
+    async function copyLink(event) {
       const input = document.getElementById('partner-link');
-      input.select();
-      document.execCommand('copy');
-      const btn = event.target;
-      const orig = btn.textContent;
-      btn.textContent = 'Copied ✓';
-      setTimeout(() => btn.textContent = orig, 1500);
+      const btn = event && event.currentTarget ? event.currentTarget : document.querySelector('#partner-link + button');
+      const orig = btn ? btn.textContent : 'Copy';
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(input.value);
+        } else {
+          input.select();
+          document.execCommand('copy');
+        }
+        if (btn) {
+          btn.textContent = 'Copied ✓';
+          setTimeout(() => btn.textContent = orig, 1500);
+        }
+      } catch (error) {
+        console.error('Copy failed:', error);
+        input.select();
+        document.execCommand('copy');
+      }
     }
 
     // Auto-load if session is in storage
     const cached = sessionStorage.getItem('rulio_aff');
     if (cached) {
-      const { ref, key } = JSON.parse(cached);
-      document.getElementById('ref').value = ref;
-      document.getElementById('key').value = key;
-      loadDashboard();
+      try {
+        const { ref, key } = JSON.parse(cached);
+        document.getElementById('ref').value = ref;
+        document.getElementById('key').value = key;
+        loadDashboard();
+      } catch (error) {
+        console.warn('Cached affiliate session was invalid and has been cleared.', error);
+        sessionStorage.removeItem('rulio_aff');
+      }
     }
   </script>
 </body>

@@ -12,235 +12,55 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <!-- PostHog analytics -->
   <script>
-    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e.__SV||{}).init=function(a){var i={api_host:"https://eu.i.posthog.com"},s=(o=a.split(".")).pop();o.length>0&&(i.api_host=o.join(".")||o[0]),s&&(i.cookie_prefix=s+"_",i.cookie_domain=window.location.hostname);var l=e.__SV||{};l.init?l.init(a,s):l.waitInit&&l.waitInit(a,s);l.queue=[];l.methods=["track","track_pageview","identify","reset","group","track_forms"];for(var t of l.methods)l[t]=l[t].bind(l);l.queue=[];for(var m of l.queue)m.push([t,m[1]]);l.queue=[];return l},(e.__SV=1.5).load=function(a,s){var l=window.posthog;if(!l||l._i)a=a.split(".");var i="";if(o=a.pop(),i=o&&o.length>0?o.join("."):o,!(s=s||"script"))return;var n=document.createElement(s);n.async=!0,n.src="https://cdn.posthog.com/static/recorder.js";var p=document.getElementsByTagName(s)[0];p.parentNode.insertBefore(n,p);l._i=!0},e.__SV){}}(window,document);
-    posthog.init('phc_REPLACE_ME', { api_host: 'https://eu.i.posthog.com' });
-    posthog.capture('audit_page_viewed');
-  </script>
-  <style>
-    :root {
-      --background: #0c0c0e;
-      --foreground: #f4f1ea;
-      --muted: #a1a1aa;
-      --accent: #8FD1FF;
-      --rule: rgba(244, 241, 234, 0.12);
+    const bookingConfig = window.RULIO_BOOKING_CONFIG || {};
+    const SUPABASE_URL = String(bookingConfig.supabaseUrl || 'https://rulio-engine.fly.dev').replace(/\/$/, '');
+    const SUPABASE_ANON_KEY = bookingConfig.supabaseAnonKey || '';
+    const CALENDLY_BASE = bookingConfig.calendlyBase || 'https://calendly.com/rulio/energy-audit';
+
+    const state = { intake: null, calendlyListenerAttached: false };
+
+    function showFormError(message) {
+      const err = document.getElementById('form-error');
+      err.textContent = message;
+      err.classList.add('is-visible');
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { background: var(--background); color: var(--foreground); }
-    body { font-family: "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.6; }
 
-    .topbar { padding: 1.25rem 2rem; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; }
-    .topbar a { color: var(--muted); text-decoration: none; font-size: 0.85rem; }
-    .topbar a:hover { color: var(--foreground); }
+    function clearFormError() {
+      const err = document.getElementById('form-error');
+      err.classList.remove('is-visible');
+    }
 
-    .page { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
-    @media (max-width: 880px) { .page { grid-template-columns: 1fr; gap: 3rem; padding: 2rem 1.5rem 3rem; } }
+    function goToStep(stepId) {
+      ['step-1', 'step-2', 'step-3'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.classList.toggle('is-active', id === stepId);
+        }
+      });
+    }
 
-    h1 { font-family: "Fraunces", serif; font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 1rem; }
-    h1 em { font-style: italic; color: var(--accent); }
-    h2 { font-family: "Fraunces", serif; font-size: 1.25rem; font-weight: 500; margin-bottom: 0.75rem; }
+    function attachCalendlyListener(data) {
+      if (state.calendlyListenerAttached) return;
+      state.calendlyListenerAttached = true;
 
-    .lede { color: var(--muted); font-size: 1.05rem; margin-bottom: 2rem; }
+      window.addEventListener('message', (event) => {
+        if (!event.data || !event.data.event || !event.data.event.startsWith('calendly')) return;
+        if (event.data.event !== 'calendly.event_scheduled') return;
 
-    .what { margin-bottom: 2.5rem; }
-    .what ul { list-style: none; padding: 0; }
-    .what li { padding: 0.75rem 0; padding-left: 1.75rem; position: relative; color: var(--muted); }
-    .what li::before { content: "→"; position: absolute; left: 0; top: 0.75rem; color: var(--accent); }
+        if (window.posthog) {
+          posthog.capture('audit_scheduled', { ...data, calendly_event: event.data.payload });
+        }
 
-    .expect { background: rgba(143, 209, 255, 0.04); border: 1px solid rgba(143, 209, 255, 0.18); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
-    .expect h3 { font-family: "Inter", sans-serif; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.75rem; }
-    .expect ol { list-style: none; counter-reset: step; }
-    .expect li { counter-increment: step; padding: 0.4rem 0 0.4rem 2.5rem; position: relative; color: var(--muted); }
-    .expect li::before { content: counter(step); position: absolute; left: 0; top: 0.4rem; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: rgba(143, 209, 255, 0.12); color: var(--accent); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        goToStep('step-3');
+        document.getElementById('confirm-msg').textContent =
+          `Calendar invite sent to ${data.email}. 24-hour reminder + 5-min prep doc coming next.`;
+      });
+    }
 
-    .form { background: rgba(244, 241, 234, 0.02); border: 1px solid var(--rule); border-radius: 16px; padding: 2rem; }
-    .form-step { display: none; }
-    .form-step.is-active { display: block; }
-    .form-step h2 { margin-bottom: 0.25rem; }
-    .form-step .hint { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
-
-    label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 0.4rem; margin-top: 1rem; }
-    label .req { color: var(--accent); }
-    input, select, textarea { width: 100%; background: var(--background); color: var(--foreground); border: 1px solid var(--rule); border-radius: 8px; padding: 0.75rem 0.9rem; font-family: inherit; font-size: 0.95rem; transition: border-color 0.2s; }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
-    textarea { min-height: 100px; resize: vertical; }
-
-    .btn-row { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
-    .btn { padding: 0.875rem 1.5rem; border-radius: 8px; font-weight: 500; text-decoration: none; transition: all 0.2s; display: inline-block; font-size: 0.95rem; cursor: pointer; border: none; font-family: inherit; }
-    .btn-primary { background: var(--accent); color: var(--background); }
-    .btn-primary:hover { background: #6fb8e6; }
-    .btn-primary:disabled { background: var(--muted); cursor: not-allowed; }
-    .btn-ghost { background: transparent; color: var(--foreground); border: 1px solid var(--rule); }
-    .btn-ghost:hover { border-color: var(--foreground); }
-
-    .calendly-embed { min-height: 600px; margin-top: 1rem; }
-
-    .success { text-align: center; padding: 2rem 0; }
-    .success h2 { color: var(--accent); margin-bottom: 0.5rem; }
-    .success p { color: var(--muted); margin-bottom: 1rem; }
-    .success .next-steps { background: rgba(244, 241, 234, 0.02); border: 1px solid var(--rule); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; text-align: left; }
-    .success .next-steps li { color: var(--muted); padding: 0.4rem 0; }
-
-    .disclaimer { color: var(--muted); font-size: 0.75rem; text-align: center; padding: 2rem 2rem 1rem; max-width: 640px; margin: 0 auto; }
-
-    .error { background: rgba(255, 100, 100, 0.08); border: 1px solid rgba(255, 100, 100, 0.2); border-radius: 8px; padding: 0.75rem 1rem; color: #ff9999; font-size: 0.85rem; margin-top: 1rem; display: none; }
-    .error.is-visible { display: block; }
-  </style>
-</head>
-<body>
-
-  <div class="topbar">
-    <a href="../../landing-page/index.html">← Rulio Engine</a>
-    <a href="mailto:hello@rulio.io">hello@rulio.io</a>
-  </div>
-
-  <main class="page">
-
-    <section>
-      <h1>Book your <em>Energy Audit.</em></h1>
-      <p class="lede">
-        A free 30-minute structured look at your current state — energy,
-        focus, creative flow — and a custom prescription of which of the
-        9 solfeggio frequencies to use, when.
-      </p>
-
-      <div class="what">
-        <h2>What you get</h2>
-        <ul>
-          <li>A 30-min 1:1 video call with Roel (founder, Rulio Studio).</li>
-          <li>A 1-page "Rulio Code Card" with the 9 frequencies.</li>
-          <li>A custom <strong>5-minute daily practice</strong> written for your specific schedule (5 templates, one for each kind of day).</li>
-          <li>The Rulio Qi Method book (38 pages, 12 free audio sessions) sent after the call.</li>
-        </ul>
-      </div>
-
-      <div class="expect">
-        <h3>What to expect (30 min)</h3>
-        <ol>
-          <li><strong style="color: var(--foreground);">5 min</strong> — your current state: energy, focus, sleep, the worst hour of your day.</li>
-          <li><strong style="color: var(--foreground);">10 min</strong> — your schedule: a walk through tomorrow, identifying the hour that hurts most.</li>
-          <li><strong style="color: var(--foreground);">10 min</strong> — the prescription: which 3 of the 9 solfeggio frequencies match, when, how to layer them.</li>
-          <li><strong style="color: var(--foreground);">5 min</strong> — the daily: a single 5-minute practice you can actually stick to.</li>
-        </ol>
-      </div>
-
-      <p class="lede" style="font-size: 0.9rem;">
-        No pitch. No upsell. The deliverable is the prescription. If
-        after the call you want the Rulio Engine app or a Studio
-        retainer, that's a separate conversation.
-      </p>
-    </section>
-
-    <section class="form">
-      <!-- Step 1: intake form -->
-      <div class="form-step is-active" id="step-1">
-        <h2>Step 1 of 2 — tell us a bit about you</h2>
-        <p class="hint">60 seconds. Helps us tailor the prescription.</p>
-
-        <form id="intake-form">
-          <label for="name">Your name <span class="req">*</span></label>
-          <input type="text" id="name" name="name" required autocomplete="name" placeholder="Jane Doe" />
-
-          <label for="email">Email <span class="req">*</span></label>
-          <input type="email" id="email" name="email" required autocomplete="email" placeholder="jane@brand.com" />
-
-          <label for="company">Company / brand <span class="req">*</span></label>
-          <input type="text" id="company" name="company" required placeholder="What's the brand called?" />
-
-          <label for="role">Your role <span class="req">*</span></label>
-          <select id="role" name="role" required>
-            <option value="">Select one</option>
-            <option>Founder / CEO</option>
-            <option>Operator / Head of</option>
-            <option>Engineer / IC</option>
-            <option>Creator / Solopreneur</option>
-            <option>Other</option>
-          </select>
-
-          <label for="worst_hour">What's the worst hour of your workday? <span class="req">*</span></label>
-          <input type="text" id="worst_hour" name="worst_hour" required placeholder="e.g. 3pm, after standup, late evening" />
-
-          <label for="source">How did you hear about Rulio?</label>
-          <select id="source" name="source">
-            <option value="">Select one (optional)</option>
-            <option>LinkedIn</option>
-            <option>Referral from a Rulio contact</option>
-            <option>5D Masters (rebrand)</option>
-            <option>The Rulio Qi Method book</option>
-            <option>Search</option>
-            <option>Other</option>
-          </select>
-
-          <label for="notes">Anything else we should know? (optional)</label>
-          <textarea id="notes" name="notes" placeholder="Goals, context, a specific problem you want to solve…"></textarea>
-
-          <div class="error" id="form-error">Something went wrong. Please try again or email hello@rulio.io.</div>
-
-          <div class="btn-row">
-            <button type="submit" class="btn btn-primary" id="next-btn">Continue → pick a time</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- Step 2: Calendly embed -->
-      <div class="form-step" id="step-2">
-        <h2>Step 2 of 2 — pick a 30-min slot</h2>
-        <p class="hint" id="step-2-name">Choose a time that works for you. Roel runs the calls himself.</p>
-        <div class="calendly-embed" id="calendly-embed">
-          <!-- Calendly inline widget injected after intake submit -->
-          <div style="display:flex;align-items:center;justify-content:center;height:400px;color:var(--muted);">
-            Loading calendar…
-          </div>
-        </div>
-        <div class="btn-row">
-          <button type="button" class="btn btn-ghost" id="back-btn">← back</button>
-        </div>
-      </div>
-
-      <!-- Step 3: confirmation -->
-      <div class="form-step" id="step-3">
-        <div class="success">
-          <h2>You're booked.</h2>
-          <p id="confirm-msg">A calendar invite is in your inbox. You'll also get a 5-min read to help you prep, and a 24-hour reminder the day before.</p>
-          <div class="next-steps">
-            <p style="color: var(--foreground); font-weight: 500; margin-bottom: 0.5rem;">Three things to do now:</p>
-            <ul>
-              <li>📅 Add the call to your calendar (the invite has the link).</li>
-              <li>📖 Read the 5-min prep doc (link in the confirmation email).</li>
-              <li>🎧 If you have headphones handy, wear them — we'll listen to a sample session.</li>
-            </ul>
-          </div>
-          <p style="margin-top: 1.5rem; font-size: 0.85rem;">
-            Need to reschedule? The link in the calendar invite has you covered.
-          </p>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <p class="disclaimer">
-    Rulio Energy Audits are a 30-min conversation about your current
-    state. They are not a medical consultation and do not diagnose or
-    treat any condition. If you have a medical condition, please consult
-    a qualified practitioner.
-  </p>
-
-  <script>
-    // ---- Config (set these in production) ----
-    const SUPABASE_URL = 'https://REPLACE_ME.supabase.co';
-    const SUPABASE_ANON_KEY = 'REPLACE_ME';
-    const CALENDLY_BASE = 'https://calendly.com/rulio/energy-audit';
-    const RESEND_API_KEY = 'REPLACE_ME';
-
-    // ---- State ----
-    const state = { intake: null };
-
-    // ---- Step 1: intake submit ----
     document.getElementById('intake-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('next-btn');
-      const err = document.getElementById('form-error');
-      err.classList.remove('is-visible');
+      clearFormError();
       btn.disabled = true;
       btn.textContent = 'Saving…';
 
@@ -257,18 +77,31 @@
       };
 
       try {
-        // 1. Save to Supabase
-        const resp = await fetch(`${SUPABASE_URL}/rest/v1/audit_leads`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-            'Prefer': 'return=minimal',
-          },
-          body: JSON.stringify(data),
-        });
-        if (!resp.ok) throw new Error(`Supabase ${resp.status}`);
+        const hasSupabaseConfig = Boolean(
+          SUPABASE_URL &&
+          !SUPABASE_URL.includes('REPLACE_ME') &&
+          SUPABASE_ANON_KEY &&
+          !SUPABASE_ANON_KEY.includes('REPLACE_ME')
+        );
+
+        if (hasSupabaseConfig) {
+          const resp = await fetch(`${SUPABASE_URL}/rest/v1/audit_leads`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Prefer': 'return=minimal',
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (!resp.ok) {
+            throw new Error(`Supabase ${resp.status}`);
+          }
+        } else {
+          console.info('Booking form is running in demo mode; no Supabase connection configured.');
+        }
 
         state.intake = data;
         if (window.posthog) {
@@ -276,60 +109,43 @@
           posthog.capture('audit_intake_submitted', data);
         }
 
-        // 2. Move to step 2 — inject Calendly
-        document.getElementById('step-1').classList.remove('is-active');
-        document.getElementById('step-2').classList.add('is-active');
+        goToStep('step-2');
         document.getElementById('step-2-name').textContent =
           `Thanks ${data.name.split(' ')[0]} — pick a 30-min slot. Roel runs the calls himself, Europe/Brussels time.`;
 
-        // 3. Mount Calendly with prefilled name + email
         const calendlyDiv = document.getElementById('calendly-embed');
         calendlyDiv.innerHTML = '';
         const url = new URL(CALENDLY_BASE);
         url.searchParams.set('name', data.name);
         url.searchParams.set('email', data.email);
         url.searchParams.set('a1', `Company: ${data.company} | Role: ${data.role} | Worst hour: ${data.worst_hour}`);
-        // Calendly inline embed
+
         const link = document.createElement('div');
         link.className = 'calendly-inline-widget';
         link.setAttribute('data-url', url.toString());
         link.style.minWidth = '320px';
         link.style.height = '700px';
         calendlyDiv.appendChild(link);
-        // Load Calendly script
+
         const script = document.createElement('script');
         script.src = 'https://assets.calendly.com/assets/external/widget.js';
         script.async = true;
         document.body.appendChild(script);
 
-        // 4. Listen for Calendly event_post_type: event_scheduled
-        window.addEventListener('message', (e) => {
-          if (e.data.event && e.data.event.indexOf('calendly') === 0) {
-            if (e.data.event === 'calendly.event_scheduled') {
-              if (window.posthog) posthog.capture('audit_scheduled', { ...data, calendly_event: e.data.payload });
-              // Move to step 3
-              document.getElementById('step-2').classList.remove('is-active');
-              document.getElementById('step-3').classList.add('is-active');
-              document.getElementById('confirm-msg').textContent =
-                `Calendar invite sent to ${data.email}. 24-hour reminder + 5-min prep doc coming next.`;
-            }
-          }
-        });
-
+        attachCalendlyListener(data);
       } catch (error) {
         console.error('Intake submit failed:', error);
-        err.classList.add('is-visible');
+        showFormError('Something went wrong. Please try again or email hello@rulio.io.');
         btn.disabled = false;
         btn.textContent = 'Continue → pick a time';
       }
     });
 
-    // ---- Back button ----
     document.getElementById('back-btn').addEventListener('click', () => {
-      document.getElementById('step-2').classList.remove('is-active');
-      document.getElementById('step-1').classList.add('is-active');
-      document.getElementById('next-btn').disabled = false;
-      document.getElementById('next-btn').textContent = 'Continue → pick a time';
+      goToStep('step-1');
+      const btn = document.getElementById('next-btn');
+      btn.disabled = false;
+      btn.textContent = 'Continue → pick a time';
     });
   </script>
 
