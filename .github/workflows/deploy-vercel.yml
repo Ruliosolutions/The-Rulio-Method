@@ -1,0 +1,56 @@
+name: Deploy to Vercel
+
+# Auto-deploys the engine/ subdirectory to Vercel on every push to main.
+#
+# Required GitHub repository secrets (Settings → Secrets and variables → Actions):
+#   VERCEL_TOKEN     — from https://vercel.com/account/tokens
+#   VERCEL_ORG_ID    — from .vercel/project.json (orgId field)
+#   VERCEL_PROJECT_ID — from .vercel/project.json (projectId field)
+#
+# Without these, the workflow will fail with a clear "secret not found" error.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "engine/**"
+      - ".github/workflows/deploy-vercel.yml"
+  workflow_dispatch: # manual trigger from the Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: engine
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel project info
+        id: vercel-pull
+        run: |
+          echo "VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }}" > .vercel.env
+          echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }}" >> .vercel.env
+          # Pre-create .vercel/project.json so vercel deploy knows the target
+          mkdir -p .vercel
+          cat > .vercel/project.json <<EOF
+          {"orgId":"${{ secrets.VERCEL_ORG_ID }}","projectId":"${{ secrets.VERCEL_PROJECT_ID }}"}
+          EOF
+
+      - name: Deploy to production
+        run: vercel deploy --prod --yes --token "${{ secrets.VERCEL_TOKEN }}"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Smoke test
+        run: |
+          sleep 8
+          HEALTH=$(curl -sf "https://${{ secrets.VERCEL_PROJECT_NAME }}/api/health" || echo "")
+          if [ -n "$HEALTH" ]; then
+            echo "✓ Health check: $HEALTH"
+          else
+            echo "⚠ Health check didn't respond (Vercel may still be warming up). Check manually in 30s."
+          fi

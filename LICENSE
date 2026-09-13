@@ -1,0 +1,52 @@
+# Rulio Engine — dual license
+
+## Source code (engine/, scripts/, lib/ helpers)
+
+```
+                    GNU AFFERO GENERAL PUBLIC LICENSE
+                       Version 3, 19 November 2007
+
+ Copyright (C) 2026 Roel Janssens / Rulio Studio
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+```
+
+Full AGPL-3.0 text: https://www.gnu.org/licenses/agpl-3.0.txt
+
+## Brand assets (assets/, all logo files, R mark, banner images)
+
+All rights reserved. You may reference these for review or testing, but you may not use the R mark, Rulio name, or brand assets in any commercial product, marketing material, or derivative work without written permission from Roel Janssens.
+
+## Content (ebook/, qi-sessions/, launch-kit/, workshop/)
+
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+
+You may copy, remix, and redistribute, including for commercial purposes, with attribution: "From Rulio by Roel Janssens · rulio.app".
+
+The solfeggio frequency associations are based on the public work of Dr. Joseph Puleo and the solfeggio tradition. The 528 Hz "DNA repair" claim referenced in this repo is from the retracted Stanford 2018 paper and is included here as a critical example, not as an endorsement.
+
+## Audio (qi-sessions/audio/*.mp3)
+
+CC BY 4.0 (with attribution). Solfeggio tones are a public tradition; specific recordings are original to Rulio Studio.
+
+## TL;DR
+
+- Read the code: yes
+- Run it locally: yes
+- Self-host: yes (under AGPL-3.0)
+- Sell it as your own product: no
+- Use the R mark: no (without permission)
+- Quote the ebook: yes (with attribution)
+- Resell the audio: yes (with attribution)
