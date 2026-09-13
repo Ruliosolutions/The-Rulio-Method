@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rulio × Partner — co-marketing, distribution, affiliate</title>
+  <meta name="description" content="Partnership deck for the Rulio ecosystem. Co-marketing with podcasters and newsletters, distribution with platforms, affiliate for operators." />
+  <meta name="theme-color" content="#0c0c0e" />
+  <link rel="icon" type="image/png" href="_assets/rulio-favicon-256.png" />
+  <meta property="og:image" content="_assets/rulio-youtube-banner-2560x1440.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0c0e;
+      --fg: #f4f1ea;
+      --muted: #a1a1aa;
+      --rule: rgba(244, 241, 234, 0.10);
+      --card: rgba(244, 241, 234, 0.03);
+      --accent: #5BB8FF;
+      --accent-glow: #8FD1FF;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bg); color: var(--fg); }
+    body { font-family: "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    .serif { font-family: "Fraunces", serif; }
+    .mono { font-family: "JetBrains Mono", monospace; }
+    a { color: var(--accent-glow); text-decoration: none; }
+    a:hover { color: var(--fg); }
+
+    .topbar { padding: 1.5rem 2rem; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; }
+    .topbar-logo { display: flex; align-items: center; gap: 0.75rem; font-weight: 600; letter-spacing: 0.05em; }
+    .topbar-logo img { width: 40px; height: 40px; border-radius: 8px; }
+    .topbar-logo small { display: block; color: var(--muted); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .slide { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+    .slide .num { font-family: "JetBrains Mono", monospace; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.2em; margin-bottom: 1rem; }
+    .slide h1 { font-family: "Fraunces", serif; font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1.5rem; }
+    .slide h1 em { font-style: italic; color: var(--accent-glow); }
+    .slide h2 { font-family: "Fraunces", serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 400; margin-bottom: 1.5rem; }
+    .slide p { font-size: 1.1rem; color: var(--muted); max-width: 640px; margin-bottom: 1rem; }
+    .slide ul { color: var(--muted); padding-left: 1.5rem; margin: 1rem 0; }
+    .slide li { margin-bottom: 0.6rem; font-size: 1.05rem; }
+    .slide hr { border: none; border-top: 1px solid var(--rule); margin: 0; }
+
+    .nav { position: fixed; bottom: 2rem; right: 2rem; display: flex; gap: 0.5rem; z-index: 100; }
+    .nav button { background: var(--card); border: 1px solid var(--rule); color: var(--fg); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
+    .nav button:hover { border-color: var(--accent); }
+
+    .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .tiers { grid-template-columns: 1fr; } }
+    .tier { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 1.5rem; }
+    .tier h3 { font-family: "Fraunces", serif; font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--accent-glow); }
+    .tier .price { font-family: "JetBrains Mono", monospace; font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; }
+    .tier ul { padding-left: 1.2rem; }
+    .tier li { font-size: 0.85rem; margin-bottom: 0.4rem; }
+
+    .numbers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 2rem 0; }
+    @media (max-width: 700px) { .numbers { grid-template-columns: repeat(2, 1fr); } }
+    .number { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 1.5rem; }
+    .number .val { font-family: "Fraunces", serif; font-size: 2.5rem; color: var(--accent-glow); line-height: 1; }
+    .number .label { font-family: "JetBrains Mono", monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.5rem; }
+
+    .cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+    .btn { display: inline-block; padding: 0.9rem 1.5rem; border-radius: 999px; font-weight: 600; font-size: 0.95rem; }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover { background: var(--accent-glow); color: var(--bg); }
+    .btn-secondary { background: transparent; color: var(--fg); border: 1px solid rgba(244,241,234,0.2); }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent-glow); }
+
+    .progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); transition: width 0.3s; z-index: 100; }
+
+    footer { padding: 3rem 2rem; border-top: 1px solid var(--rule); text-align: center; color: var(--muted); font-size: 0.85rem; max-width: 900px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress" style="width: 10%"></div>
+
+  <div class="topbar">
+    <div class="topbar-logo">
+      <img src="_assets/rulio-app-icon-1024.png" alt="Rulio" />
+      <div>
+        <strong>RULIO × PARTNER</strong>
+        <small>Co-marketing, distribution, affiliate</small>
+      </div>
+    </div>
+    <a href="mailto:partnerships@rulio.io" style="font-size: 0.85rem;">partnerships@rulio.io</a>
+  </div>
+
+  <div class="slide" id="slide-1">
+    <div class="num">01 — COVER</div>
+    <h1>Rulio.<br>Adaptive audio for <em>founders who can't sleep.</em></h1>
+    <p>A partnership pitch for podcasters, newsletter operators, podcast networks, wellness platforms, and accelerator directors who want to put a frequency-based sleep + focus product in front of their audience.</p>
+    <p style="color: var(--muted); font-size: 0.9rem;">Brussels · 2026</p>
+  </div>
+
+  <hr />
+
+  <div class="slide" id="slide-2">
+    <div class="num">02 — THE PROBLEM</div>
+    <h2>Founders don't have a meditation problem.<br>They have a <em>frequency</em> problem.</h2>
+    <p>Every sleep, focus, and creative-flow tool in the market is built around breathwork, mindfulness, or "manifest your reality." None of them address what founders actually need: a way to shift brainwave state in 5 minutes, with a written protocol they can run the same day.</p>
+    <p>That's the gap Rulio fills. The 9 solfeggio frequencies, layered with binaural-beat offsets that match the desired brainwave band, generated live in the browser. Not a meditation app. A frequency tool.</p>
+  </div>
+
+  <hr />
+
+  <div class="slide" id="slide-3">
+    <div class="num">03 — THE PRODUCT</div>
+    <h2>Three products. One ecosystem.</h2>
+    <ul>
+      <li><strong>The Rulio Qi Sessions</strong> — 14 free audio sessions (5 min each, plus 2 × 25-min extended) for sleep, focus, energy, anxiety, creative block, intuition, connection, pre-pitch. Streamed from rulio.app/qi.</li>
+      <li><strong>The Energy Reset Workshop</strong> — 90-min live, online, monthly. €47 standard, €29 with the book, €500 bundle with 6-mo Engine Pro. The protocol design is the most useful 25 minutes.</li>
+      <li><strong>The Studio Retainer</strong> — €2,000/mo. Custom protocol refinement + monthly 1:1 with Roel + private sessions. The high-ticket back end of the funnel.</li>
+    </ul>
+    <p>The free sessions are the lead magnet. The workshop is the mid-ticket conversion. The Studio retainer is the high-ticket close. Each tier feeds the next.</p>
+  </div>
+
+  <hr />
+
+  <div class="slide" id="slide-4">
+    <div class="num">04 — THE NUMBERS</div>
+    <h2>Built, not pitched.</h2>
+    <div class="numbers">
+      <div class="number"><div class="val">14</div><div class="label">Qi sessions shipped</div></div>
+      <div class="number"><div class="val">7</div><div class="label">AI features live</div></div>
+      <div class="number"><div class="val">6</div><div class="label">Public surfaces</div></div>
+      <div class="number"><div class="val">3</div><div class="label">Monetisation tiers</div></div>
+      <div class="number"><div class="val">100%</div><div class="label">Open-source engine</div></div>
+      <div class="number"><div class="val">EN/NL/FR</div><div class="label">First-class languages</div></div>
+      <div class="number"><div class="val">€6.1k</div><div class="label">90-day MRR target</div></div>
+      <div class="number"><div class="val">€22.8k</div><div class="label">90-day one-time target</div></div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="slide" id="slide-5">
+    <div class="num">05 — PARTNERSHIP TIERS</div>
+    <h2>Three ways to partner.</h2>
+    <div class="tiers">
+      <div class="tier">
+        <h3>Affiliate</h3>
+        <div class="price">30% recurring · 90 days</div>
+        <ul>
+          <li>Custom landing page with your UTM</li>
+          <li>Real-time dashboard</li>
+          <li>Monthly payouts via Stripe</li>
+          <li>No cap on referrals</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <h3>Co-marketing</h3>
+        <div class="price">Rev-share · negotiable</div>
+        <ul>
+          <li>Co-branded landing page</li>
+          <li>Cross-promo in both audiences</li>
+          <li>Custom session for your niche</li>
+          <li>Joint workshop / webinar option</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <h3>Distribution</h3>
+        <div class="price">Per-seat licence</div>
+        <ul>
+          <li>White-label Engine Pro access</li>
+          <li>Co-branded for your platform</li>
+          <li>API access for integration</li>
+          <li>Annual minimum</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="slide" id="slide-6">
+    <div class="num">06 — THE FIT</div>
+    <h2>Best fit for partners who reach operators.</h2>
+    <ul>
+      <li><strong>Founder podcasts</strong> with audiences of 5k-100k operators (Indie Hackers, My First Million, The Bootstrapped Founder, Y Combinator, MicroAcquire, Acquired)</li>
+      <li><strong>Newsletters</strong> in the operator / indie / healthspan space (The Hustle, The Daily Carnage, Morning Brew Health, Naval's newsletter, Wait But Why, ACQ2 by Acquired)</li>
+      <li><strong>Communities</strong> — Slack/Discord groups, paid communities (Demand Curve, 30x500, MicroConf, Dynamite Circle)</li>
+      <li><strong>Accelerators</strong> — YC, Antler, Techstars, OnDeck, EF (give every cohort member a free Energy Audit as part of their benefits package)</li>
+      <li><strong>Wellness platforms</strong> with a founder / executive tier (Calm Business, Headspace for Work, M indistractable)</li>
+    </ul>
+  </div>
+
+  <hr />
+
+  <div class="slide" id="slide-7">
+    <div class="num">07 — WHAT'S IN IT FOR YOU</div>
+    <h2>Real numbers, not vibes.</h2>
+    <p>For a podcast with 10k operators in the audience, the conservative case is:</p>
+    <ul>
+      <li>2% click-through on a single dedicated episode mention</li>
+      <li>40% landing-page conversion to free 30-min Energy Audit</li>
+      <li>30% audit close to €2,000/mo Studio retainer (per Section 4 §1 of the strategy doc)</li>
+      <li>30% affiliate cut on a 12-month customer = €720 per signup</li>
+    </ul>
+    <p>For a podcast that does 4 dedicated episodes per year, that's <strong>~€2,800 per quarter</strong> on the conservative model. Scale up to newsletters, communities, and accelerators and the math compounds.</p>
+  </div>
+
+  <hr />
+
+  <div class="slide" id="slide-8">
+    <div class="num">08 — NEXT STEPS</div>
+    <h2>Three ways to start.</h2>
+    <div class="cta">
+      <a class="btn btn-primary" href="mailto:partnerships@rulio.io?subject=Affiliate%20inquiry">Start as affiliate →</a>
+      <a class="btn btn-secondary" href="mailto:partnerships@rulio.io?subject=Co-marketing%20inquiry">Co-marketing pitch →</a>
+      <a class="btn btn-secondary" href="mailto:partnerships@rulio.io?subject=Distribution%20inquiry">Distribution licence →</a>
+    </div>
+    <p style="margin-top: 2rem; color: var(--muted); font-size: 0.9rem;">Response time: under 24 hours, M–F. Roel reads every inquiry personally.</p>
+    <p style="color: var(--muted); font-size: 0.9rem;">partnerships@rulio.io · Brussels · 2026</p>
+  </div>
+
+  <div class="nav">
+    <button onclick="prevSlide()" aria-label="Previous slide">←</button>
+    <button onclick="nextSlide()" aria-label="Next slide">→</button>
+  </div>
+
+  <footer>
+    <p>RULIO.STUDIO · BRUSSELS · 2026 · <a href="mailto:partnerships@rulio.io">partnerships@rulio.io</a> · <a href="/press-kit">Press kit</a></p>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const progress = document.getElementById('progress');
+    let current = 0;
+
+    function showSlide(i) {
+      if (i < 0 || i >= slides.length) return;
+      current = i;
+      slides.forEach((s, idx) => s.style.display = idx === i ? 'flex' : 'none');
+      progress.style.width = `${((i + 1) / slides.length) * 100}%`;
+      window.scrollTo(0, 0);
+    }
+
+    function nextSlide() { showSlide(current + 1); }
+    function prevSlide() { showSlide(current - 1); }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+
+    showSlide(0);
+  </script>
+</body>
+</html>
