@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a free Rulio Energy Audit — 30 min, online</title>
+  <meta name="description" content="A free 30-min structured look at your current state (energy, focus, creative flow) and a custom prescription of which of the 9 solfeggio frequencies to use, when." />
+  <meta name="theme-color" content="#0c0c0e" />
+  <link rel="icon" type="image/png" href="../../assets/rulio-wordmark-1024.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- PostHog analytics -->
+  <script>
+    const bookingConfig = window.RULIO_BOOKING_CONFIG || {};
+    const SUPABASE_URL = String(bookingConfig.supabaseUrl || 'https://rulio-engine.fly.dev').replace(/\/$/, '');
+    const SUPABASE_ANON_KEY = bookingConfig.supabaseAnonKey || '';
+    const CALENDLY_BASE = bookingConfig.calendlyBase || 'https://calendly.com/rulio/energy-audit';
+
+    const state = { intake: null, calendlyListenerAttached: false };
+
+    function showFormError(message) {
+      const err = document.getElementById('form-error');
+      err.textContent = message;
+      err.classList.add('is-visible');
+    }
+
+    function clearFormError() {
+      const err = document.getElementById('form-error');
+      err.classList.remove('is-visible');
+    }
+
+    function goToStep(stepId) {
+      ['step-1', 'step-2', 'step-3'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.classList.toggle('is-active', id === stepId);
+        }
+      });
+    }
+
+    function attachCalendlyListener(data) {
+      if (state.calendlyListenerAttached) return;
+      state.calendlyListenerAttached = true;
+
+      window.addEventListener('message', (event) => {
+        if (!event.data || !event.data.event || !event.data.event.startsWith('calendly')) return;
+        if (event.data.event !== 'calendly.event_scheduled') return;
+
+        if (window.posthog) {
+          posthog.capture('audit_scheduled', { ...data, calendly_event: event.data.payload });
+        }
+
+        goToStep('step-3');
+        document.getElementById('confirm-msg').textContent =
+          `Calendar invite sent to ${data.email}. 24-hour reminder + 5-min prep doc coming next.`;
+      });
+    }
+
+    document.getElementById('intake-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('next-btn');
+      clearFormError();
+      btn.disabled = true;
+      btn.textContent = 'Saving…';
+
+      const form = e.target;
+      const data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        company: form.company.value.trim(),
+        role: form.role.value,
+        worst_hour: form.worst_hour.value.trim(),
+        source: form.source.value || null,
+        notes: form.notes.value.trim() || null,
+        created_at: new Date().toISOString(),
+      };
+
+      try {
+        const hasSupabaseConfig = Boolean(
+          SUPABASE_URL &&
+          !SUPABASE_URL.includes('REPLACE_ME') &&
+          SUPABASE_ANON_KEY &&
+          !SUPABASE_ANON_KEY.includes('REPLACE_ME')
+        );
+
+        if (hasSupabaseConfig) {
+          const resp = await fetch(`${SUPABASE_URL}/rest/v1/audit_leads`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Prefer': 'return=minimal',
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (!resp.ok) {
+            throw new Error(`Supabase ${resp.status}`);
+          }
+        } else {
+          console.info('Booking form is running in demo mode; no Supabase connection configured.');
+        }
+
+        state.intake = data;
+        if (window.posthog) {
+          posthog.identify(data.email, { name: data.name, company: data.company });
+          posthog.capture('audit_intake_submitted', data);
+        }
+
+        goToStep('step-2');
+        document.getElementById('step-2-name').textContent =
+          `Thanks ${data.name.split(' ')[0]} — pick a 30-min slot. Roel runs the calls himself, Europe/Brussels time.`;
+
+        const calendlyDiv = document.getElementById('calendly-embed');
+        calendlyDiv.innerHTML = '';
+        const url = new URL(CALENDLY_BASE);
+        url.searchParams.set('name', data.name);
+        url.searchParams.set('email', data.email);
+        url.searchParams.set('a1', `Company: ${data.company} | Role: ${data.role} | Worst hour: ${data.worst_hour}`);
+
+        const link = document.createElement('div');
+        link.className = 'calendly-inline-widget';
+        link.setAttribute('data-url', url.toString());
+        link.style.minWidth = '320px';
+        link.style.height = '700px';
+        calendlyDiv.appendChild(link);
+
+        const script = document.createElement('script');
+        script.src = 'https://assets.calendly.com/assets/external/widget.js';
+        script.async = true;
+        document.body.appendChild(script);
+
+        attachCalendlyListener(data);
+      } catch (error) {
+        console.error('Intake submit failed:', error);
+        showFormError('Something went wrong. Please try again or email hello@rulio.io.');
+        btn.disabled = false;
+        btn.textContent = 'Continue → pick a time';
+      }
+    });
+
+    document.getElementById('back-btn').addEventListener('click', () => {
+      goToStep('step-1');
+      const btn = document.getElementById('next-btn');
+      btn.disabled = false;
+      btn.textContent = 'Continue → pick a time';
+    });
+  </script>
+
+</body>
+</html>
