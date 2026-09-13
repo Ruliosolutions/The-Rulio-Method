@@ -2,7 +2,7 @@
 
 Rulio is a practice tool, not a medical device. The 5-minute solfeggio protocol: pick your worst hour, match it to a frequency, run it for 5 days, notice.
 
-**Live:** https://rulio.app · **B2B:** https://rulio-b2b.vercel.app
+**B2B:** https://rulio-b2b.vercel.app
 
 ## What's in this repo
 
