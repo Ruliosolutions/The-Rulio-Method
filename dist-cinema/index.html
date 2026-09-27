@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rulio — The Frequency Room · Adaptive solfeggio for focus, sleep, energy</title>
+  <meta name="description" content="9 solfeggio frequencies. 5 minutes each. A private screening room for your attention." />
+  <meta name="theme-color" content="#0c0c0e" />
+  <link rel="icon" href="https://rulio.app/rulio-favicon-256.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Rulio — The Frequency Room" />
+  <meta property="og:description" content="9 solfeggio frequencies. 5 minutes each. A private screening room for your attention." />
+  <meta property="og:image" content="https://rulio.app/rulio-og-card-1200x630.png" />
+  <meta property="og:url" content="https://rulio.app" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* =============================================================
+       RULIO — The Frequency Room
+       Design system adapted from "The Digital Projectionist"
+       Pitch-black depths + electric blue neon, no borders, glassmorphism
+       ============================================================= */
+
+    /* --- Design tokens (Rulio palette) --- */
+    :root {
+      /* Surfaces — pitch black + tonal layers */
+      --surface-dim:           #0c0c0e;   /* page background, "black hole" */
+      --surface-lowest:        #08080a;   /* deepest background */
+      --surface-low:           #131316;   /* section background */
+      --surface:               #18181c;   /* mid background */
+      --surface-container:     #1f1f23;   /* main content cards */
+      --surface-container-high: #2a2a2f;  /* elevated cards */
+      --surface-container-highest: #353539; /* top-level floating panels */
+      --surface-variant:       #2a2a2f;   /* glass base */
+
+      /* Brand neons — Rulio blue + cyan */
+      --primary:        #5BB8FF;   /* electric blue */
+      --primary-bright: #8FD1FF;   /* cyan accent */
+      --primary-deep:   #2a8ed6;   /* depth */
+      --tertiary:       #8FD1FF;   /* success/new */
+
+      /* Text */
+      --on-surface:        #F4F1EA;   /* warm off-white primary */
+      --on-surface-variant: #a1a1aa;  /* muted secondary */
+
+      /* Gradient — primary to primary-bright (was pink→magenta, now blue→cyan) */
+      --gradient-neon: linear-gradient(135deg, #2a8ed6 0%, #5BB8FF 50%, #8FD1FF 100%);
+
+      /* Outline (fallback only — no borders in normal flow) */
+      --outline-variant: rgba(91, 184, 255, 0.20);
+
+      /* Spacing scale (M3 4-pt) */
+      --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
+      --s-5: 20px;  --s-6: 24px;  --s-8: 32px;  --s-10: 40px;
+      --s-12: 48px; --s-16: 64px; --s-20: 80px; --s-24: 96px;
+
+      /* Radius */
+      --r-sm: 8px;  --r-md: 12px; --r-lg: 20px; --r-full: 9999px;
+    }
+
+    /* --- Reset --- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      background: var(--surface-dim);
+      color: var(--on-surface);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; border: 0; cursor: pointer; background: none; color: inherit; }
+
+    /* --- Background atmosphere (ambient glows, not borders) --- */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 800px 600px at 15% 0%, rgba(91, 184, 255, 0.12), transparent 60%),
+        radial-gradient(ellipse 600px 800px at 85% 100%, rgba(143, 209, 255, 0.08), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* --- Layout --- */
+    main { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 var(--s-6); }
+
+    /* --- Top nav (glassmorphic pill, floating) --- */
+    .top-nav {
+      position: sticky; top: var(--s-4); z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      margin: var(--s-4) auto var(--s-12);
+      max-width: 1200px;
+      padding: var(--s-3) var(--s-5);
+      background: rgba(31, 31, 35, 0.6);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      border-radius: var(--r-full);
+    }
+    .brand {
+      display: flex; align-items: center; gap: var(--s-2);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 16px; letter-spacing: 0.02em;
+    }
+    .brand-mark {
+      width: 28px; height: 28px;
+      background: var(--gradient-neon);
+      border-radius: var(--r-sm);
+      box-shadow: 0 0 24px rgba(91, 184, 255, 0.4);
+    }
+    .nav-links { display: flex; gap: var(--s-6); }
+    .nav-links a {
+      font-size: 14px; color: var(--on-surface-variant);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--on-surface); }
+
+    /* --- Hero --- */
+    .hero {
+      padding: var(--s-20) 0 var(--s-16);
+      text-align: center;
+    }
+    .hero .eyebrow {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--primary-bright);
+      padding: var(--s-2) var(--s-4);
+      background: rgba(91, 184, 255, 0.08);
+      border-radius: var(--r-full);
+      margin-bottom: var(--s-6);
+    }
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--s-6);
+    }
+    .hero h1 em {
+      font-style: italic;
+      background: var(--gradient-neon);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+    }
+    .hero p.lede {
+      font-size: clamp(17px, 1.6vw, 20px);
+      color: var(--on-surface-variant);
+      max-width: 640px;
+      margin: 0 auto var(--s-10);
+      line-height: 1.55;
+    }
+
+    /* --- CTA pill buttons --- */
+    .cta-row { display: flex; gap: var(--s-4); justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      padding: var(--s-4) var(--s-8);
+      border-radius: var(--r-full);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px; font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--gradient-neon);
+      color: var(--surface-dim);
+      box-shadow: 0 0 32px rgba(91, 184, 255, 0.35), 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 48px rgba(91, 184, 255, 0.5), 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+    .btn-glass {
+      background: rgba(91, 184, 255, 0.06);
+      backdrop-filter: blur(20px);
+      color: var(--on-surface);
+    }
+    .btn-glass:hover { background: rgba(91, 184, 255, 0.12); }
+    .btn-text {
+      color: var(--primary);
+      padding: var(--s-4) var(--s-2);
+    }
+    .btn-text:hover { color: var(--primary-bright); }
+
+    /* --- Section header --- */
+    .section { padding: var(--s-16) 0; }
+    .section-header {
+      display: flex; align-items: end; justify-content: space-between;
+      gap: var(--s-6);
+      margin-bottom: var(--s-10);
+    }
+    .section-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: clamp(32px, 4vw, 48px);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .section-header p {
+      color: var(--on-surface-variant);
+      max-width: 380px;
+      font-size: 15px;
+    }
+
+    /* --- 9-frequency poster grid (intentional asymmetry: 1 hero + 8 small) --- */
+    .frequency-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: repeat(3, 1fr);
+      gap: var(--s-4);
+      min-height: 720px;
+    }
+    .freq-card {
+      position: relative;
+      border-radius: var(--r-lg);
+      padding: var(--s-6);
+      background: var(--surface-container);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .freq-card::after {
+      /* subtle inner glow (1px inset primary at 10%) */
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.10);
+      pointer-events: none;
+    }
+    .freq-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }
+    .freq-card .hz {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 56px;
+      letter-spacing: -0.04em;
+      background: var(--gradient-neon);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+      line-height: 1;
+    }
+    .freq-card .name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      margin-top: var(--s-2);
+    }
+    .freq-card .meta {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--on-surface-variant);
+      margin-top: var(--s-2);
+    }
+    .freq-card .use {
+      margin-top: var(--s-4);
+      font-size: 14px;
+      color: var(--on-surface-variant);
+      line-height: 1.5;
+    }
+    /* hero card spans 2 rows on left */
+    .freq-card.hero {
+      grid-row: span 3;
+      background: linear-gradient(180deg, var(--surface-container-high) 0%, var(--surface-container) 100%);
+    }
+    .freq-card.hero .hz { font-size: 120px; }
+    .freq-card.hero .name { font-size: 32px; margin-top: var(--s-4); }
+    .freq-card.hero .use { font-size: 16px; max-width: 80%; }
+
+    /* --- Featured Sessions carousel-style row (film-strip metaphor) --- */
+    .featured-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-4);
+    }
+    .session-card {
+      padding: var(--s-6);
+      background: var(--surface-container);
+      border-radius: var(--r-lg);
+      transition: transform 0.2s;
+    }
+    .session-card:hover { transform: scale(1.02); }
+    .session-card .badge {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--tertiary);
+      padding: 4px 10px;
+      background: rgba(143, 209, 255, 0.08);
+      border-radius: var(--r-full);
+      margin-bottom: var(--s-3);
+    }
+    .session-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px; font-weight: 500;
+      margin-bottom: var(--s-2);
+    }
+    .session-card p {
+      font-size: 14px; color: var(--on-surface-variant);
+      margin-bottom: var(--s-4);
+    }
+    .session-card .play {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      font-size: 13px;
+      color: var(--primary);
+    }
+    .session-card .play::before {
+      content: '';
+      width: 24px; height: 24px;
+      background: var(--gradient-neon);
+      border-radius: var(--r-full);
+      box-shadow: 0 0 16px rgba(91, 184, 255, 0.4);
+    }
+
+    /* --- Free vs Pro pricing --- */
+    .pricing {
+      background: var(--surface-low);
+      border-radius: var(--r-lg);
+      padding: var(--s-12);
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-6);
+      margin-top: var(--s-8);
+    }
+    .price-card {
+      padding: var(--s-8);
+      background: var(--surface-container);
+      border-radius: var(--r-lg);
+    }
+    .price-card.featured {
+      background: linear-gradient(180deg, var(--surface-container-highest) 0%, var(--surface-container) 100%);
+      box-shadow: 0 0 64px rgba(91, 184, 255, 0.15);
+    }
+    .price-card .name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--on-surface-variant);
+    }
+    .price-card .cost {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 64px; font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: var(--s-4) 0 var(--s-2);
+    }
+    .price-card .cost small {
+      font-size: 16px; font-weight: 400;
+      color: var(--on-surface-variant);
+    }
+    .price-card ul {
+      list-style: none;
+      margin: var(--s-6) 0;
+    }
+    .price-card li {
+      padding: var(--s-3) 0;
+      font-size: 14px;
+      color: var(--on-surface);
+    }
+    .price-card li::before {
+      content: '— ';
+      color: var(--primary);
+    }
+    .price-card li.muted::before { color: var(--on-surface-variant); }
+    .price-card li.muted { color: var(--on-surface-variant); }
+
+    /* --- Testimonial (poster style) --- */
+    .testimonial {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: var(--s-12) var(--s-8);
+      text-align: center;
+    }
+    .testimonial blockquote {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--s-6);
+    }
+    .testimonial blockquote em {
+      font-style: italic;
+      color: var(--primary-bright);
+    }
+    .testimonial cite {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--on-surface-variant);
+      font-style: normal;
+    }
+
+    /* --- Footer --- */
+    footer {
+      margin-top: var(--s-20);
+      padding: var(--s-12) 0 var(--s-8);
+      text-align: center;
+      font-size: 13px;
+      color: var(--on-surface-variant);
+    }
+    footer .disclaimer {
+      max-width: 480px;
+      margin: var(--s-6) auto;
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--on-surface-variant);
+      opacity: 0.7;
+    }
+    footer .links { display: flex; gap: var(--s-6); justify-content: center; margin-bottom: var(--s-4); }
+    footer a:hover { color: var(--on-surface); }
+
+    /* --- Mobile --- */
+    @media (max-width: 880px) {
+      .nav-links { display: none; }
+      .frequency-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+      .freq-card.hero { grid-row: auto; grid-column: span 2; }
+      .freq-card.hero .hz { font-size: 80px; }
+      .featured-row { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ TOP NAV ============ -->
+  <nav class="top-nav">
+    <a class="brand" href="/">
+      <span class="brand-mark"></span>
+      <span>Rulio</span>
+    </a>
+    <div class="nav-links">
+      <a href="#frequencies">Frequencies</a>
+      <a href="#sessions">Sessions</a>
+      <a href="#pricing">Pricing</a>
+      <a href="/shop">Shop</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <span class="eyebrow">The Frequency Room</span>
+      <h1>9 solfeggio tones.<br /><em>5 minutes each.</em></h1>
+      <p class="lede">A private screening room for your attention. Pick your worst hour. Match it to a frequency. Run it for 5 days. Notice.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/qi">Try 14 sessions free →</a>
+        <a class="btn btn-glass" href="/pro">Engine Pro · €19/mo</a>
+      </div>
+    </section>
+
+    <!-- ============ 9 FREQUENCIES ============ -->
+    <section class="section" id="frequencies">
+      <div class="section-header">
+        <h2>The 9 solfeggio<br />frequencies.</h2>
+        <p>Traditional associations, not medical claims. Use the cheat sheet to match a frequency to whatever hour of the day breaks your focus.</p>
+      </div>
+
+      <div class="frequency-grid">
+        <!-- Hero card: 528 Hz (the famous one) -->
+        <div class="freq-card hero">
+          <div class="hz">528</div>
+          <div class="meta">Hz · the famous one</div>
+          <div class="name">Repair · transformation</div>
+          <div class="use">For the 3 PM wall. When focus fractures and you can't get it back. The midpoint of the solfeggio scale — used by everyone from monks to coaches.</div>
+        </div>
+
+        <div class="freq-card">
+          <div class="hz">174</div>
+          <div class="meta">Hz</div>
+          <div class="name">Grounding</div>
+          <div class="use">For when you're scattered or anxious. Morning or before a hard meeting.</div>
+        </div>
+
+        <div class="freq-card">
+          <div class="hz">285</div>
+          <div class="meta">Hz</div>
+          <div class="name">Recovery</div>
+          <div class="use">After injury, rest day, hard workout. Felt sense of the body.</div>
+        </div>
+
+        <div class="freq-card">
+          <div class="hz">396</div>
+          <div class="meta">Hz</div>
+          <div class="name">Release guilt</div>
+          <div class="use">For when you're carrying something old. Evening, alone.</div>
+        </div>
+
+        <div class="freq-card">
+          <div class="hz">417</div>
+          <div class="meta">Hz</div>
+          <div class="name">Change</div>
+          <div class="use">Transitions — new job, new city, new chapter. When something just shifted.</div>
+        </div>
+
+        <div class="freq-card">
+          <div class="hz">639</div>
+          <div class="meta">Hz</div>
+          <div class="name">Connect</div>
+          <div class="use">Relationships, communication, harmony. Before a hard conversation.</div>
+        </div>
+
+        <div class="freq-card">
+          <div class="hz">741</div>
+          <div class="meta">Hz</div>
+          <div class="name">Awaken</div>
+          <div class="use">Intuition, problem-solving, expression. When stuck.</div>
+        </div>
+
+        <div class="freq-card">
+          <div class="hz">852</div>
+          <div class="meta">Hz</div>
+          <div class="name">Return</div>
+          <div class="use">Spiritual order, inner strength, perspective. When you've lost the plot.</div>
+        </div>
+
+        <div class="freq-card">
+          <div class="hz">963</div>
+          <div class="meta">Hz</div>
+          <div class="name">Unity</div>
+          <div class="use">Oneness, sleep, deep rest, dream state. Before sleep.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURED SESSIONS ============ -->
+    <section class="section" id="sessions">
+      <div class="section-header">
+        <h2>Featured<br />sessions.</h2>
+        <p>Three of the 14 free sessions. Curated for the most common worst hours.</p>
+      </div>
+
+      <div class="featured-row">
+        <div class="session-card">
+          <span class="badge">3 PM Wall</span>
+          <h3>528 Hz · Repair</h3>
+          <p>5 min. The most-requested session. For when focus fractures and you can't get it back.</p>
+          <span class="play">Play free</span>
+        </div>
+
+        <div class="session-card">
+          <span class="badge">Deep Work</span>
+          <h3>741 Hz · Awaken · 25 min</h3>
+          <p>The longer session. For unbroken concentration blocks. Engineer-grade focus.</p>
+          <span class="play">Play free</span>
+        </div>
+
+        <div class="session-card">
+          <span class="badge">Pre-Sleep</span>
+          <h3>285 Hz · Recovery</h3>
+          <p>5 min. Lowers heart rate variability. Pairs with eyes-closed, dim light, nothing else.</p>
+          <span class="play">Play free</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIAL ============ -->
+    <section class="section">
+      <div class="testimonial">
+        <blockquote>
+          "Skeptical on day 1. By day 4 I noticed the <em>4 PM wall</em> didn't happen."
+        </blockquote>
+        <cite>— Priya, PM, London</cite>
+      </div>
+    </section>
+
+    <!-- ============ PRICING ============ -->
+    <section class="section" id="pricing">
+      <div class="pricing">
+        <div class="section-header" style="margin-bottom: var(--s-2);">
+          <h2>Free forever.<br />Pro when you want it.</h2>
+          <p>The 14 free sessions are the whole thing. Pro is the version that does the thinking for you.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <div class="price-card">
+            <div class="name">Free</div>
+            <div class="cost">€0<small> / always</small></div>
+            <ul>
+              <li>14 solfeggio sessions</li>
+              <li>9 frequencies</li>
+              <li>5-minute protocol</li>
+              <li>Web player</li>
+              <li class="muted">AI coach (picks the frequency)</li>
+              <li class="muted">Usage tracking</li>
+              <li class="muted">Offline mode</li>
+            </ul>
+            <a class="btn btn-glass" href="/qi" style="width: 100%; justify-content: center;">Start free →</a>
+          </div>
+
+          <div class="price-card featured">
+            <div class="name" style="color: var(--primary-bright);">Engine Pro · most chosen</div>
+            <div class="cost">€19<small> / mo</small></div>
+            <ul>
+              <li>Everything in Free</li>
+              <li>40+ sessions, all frequencies</li>
+              <li>Adaptive AI coach</li>
+              <li>Usage tracking + insights</li>
+              <li>Sleep mode + offline</li>
+              <li>Priority support</li>
+              <li>Cancel anytime</li>
+            </ul>
+            <a class="btn btn-primary" href="/pro" style="width: 100%; justify-content: center;">Start 7-day trial →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+      <div class="links">
+        <a href="/shop">Shop</a>
+        <a href="/pro">Pro</a>
+        <a href="/qi">Free sessions</a>
+        <a href="mailto:hello@rulio.io">Contact</a>
+      </div>
+      <p>© 2026 Rulio Studio · Brussels · Roel Janssens</p>
+      <p class="disclaimer">
+        Not a medical device. Not a treatment for any condition. Solfeggio frequencies are a relaxation and focus tool, used the same way music is used. If you have a serious condition, see a professional.
+      </p>
+    </footer>
+
+  </main>
+</body>
+</html>
