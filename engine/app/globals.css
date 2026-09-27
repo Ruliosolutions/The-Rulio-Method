@@ -1,15 +1,575 @@
+/* =============================================================================
+   RULIO — Frequency Room Design System
+   Adapted from "The Digital Projectionist" (Google Stitch reference).
+   Pitch-black depths + electric blue neon, glassmorphism, tonal layering.
+   ============================================================================= */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* -----------------------------------------------------------------------------
+   1. DESIGN TOKENS
+----------------------------------------------------------------------------- */
 :root {
-  --background: #0c0c0e;
-  --foreground: #f4f1ea;
+  /* === Surfaces (tonal layering, light-not-shadow) === */
+  --surface-dim:            #0c0c0e;  /* page background, "black hole" */
+  --surface-lowest:         #08080a;  /* deepest background */
+  --surface-low:            #131316;  /* section background */
+  --surface:                #18181c;  /* mid background */
+  --surface-container:      #1f1f23;  /* main content cards */
+  --surface-container-high: #2a2a2f;  /* elevated cards */
+  --surface-container-highest: #353539; /* top-level floating panels */
+  --surface-variant:        #2a2a2f;  /* glass base */
+
+  /* === Brand neon — Rulio electric blue + cyan === */
+  --primary:        #5BB8FF;
+  --primary-bright: #8FD1FF;
+  --primary-deep:   #2a8ed6;
+  --primary-ultra:  #00B4FF;        /* hotter, for accents */
+  --tertiary:       #8FD1FF;
+
+  /* === Text === */
+  --on-surface:        #F4F1EA;
+  --on-surface-variant: #a1a1aa;
+
+  /* === Gradient === */
+  --gradient-neon: linear-gradient(
+    135deg,
+    #00B4FF 0%,
+    #5BB8FF 35%,
+    #8FD1FF 70%,
+    #00B4FF 100%
+  );
+  --gradient-neon-static: linear-gradient(135deg, #2a8ed6 0%, #5BB8FF 50%, #8FD1FF 100%);
+  --gradient-aurora: linear-gradient(
+    180deg,
+    rgba(91, 184, 255, 0) 0%,
+    rgba(91, 184, 255, 0.08) 50%,
+    rgba(91, 184, 255, 0) 100%
+  );
+
+  /* === Outline (no borders in normal flow) === */
+  --outline-variant: rgba(91, 184, 255, 0.20);
+
+  /* === Spacing (M3 4-pt) === */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+  --s-12: 48px; --s-16: 64px; --s-20: 80px; --s-24: 96px;
+
+  /* === Radius === */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-xl: 28px; --r-full: 9999px;
+
+  /* === Glows === */
+  --glow-sm:  0 0 16px rgba(91, 184, 255, 0.30);
+  --glow-md:  0 0 32px rgba(91, 184, 255, 0.40);
+  --glow-lg:  0 0 64px rgba(91, 184, 255, 0.50);
+  --glow-xl:  0 0 96px rgba(91, 184, 255, 0.55);
+}
+
+/* -----------------------------------------------------------------------------
+   2. BASE
+----------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  -webkit-font-smoothing: antialiased;
+  background: var(--surface-dim);
+  color: var(--on-surface);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated atmospheric backdrop — slow aurora drift */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 10%, rgba(0, 180, 255, 0.18), transparent 60%),
+    radial-gradient(ellipse 50% 60% at 80% 90%, rgba(91, 184, 255, 0.14), transparent 60%),
+    radial-gradient(ellipse 40% 40% at 60% 50%, rgba(143, 209, 255, 0.08), transparent 60%);
+  animation: aurora-drift 22s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(0px);
+}
+
+/* Subtle scan-line texture for futuristic feel */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.012) 0px,
+    rgba(255, 255, 255, 0.012) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+
+@keyframes aurora-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(2%, -2%) scale(1.05); }
+  100% { transform: translate(-2%, 1%) scale(1.02); }
+}
+
+main, .content-layer { position: relative; z-index: 2; }
+
+/* -----------------------------------------------------------------------------
+   3. TYPOGRAPHY
+----------------------------------------------------------------------------- */
+.display, h1, h2.display-lg, h2.display-md {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+h1, .display-lg {
+  font-size: clamp(48px, 8vw, 96px);
+  letter-spacing: -0.04em;
+}
+
+h2, .display-md {
+  font-size: clamp(32px, 4.5vw, 56px);
+}
+
+h3 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: clamp(20px, 2vw, 28px);
+  letter-spacing: -0.01em;
+}
+
+/* Gradient italic accent — the "Movie Poster" word */
+.accent {
+  font-style: italic;
+  background: var(--gradient-neon);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 8s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(91, 184, 255, 0.4));
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+p { line-height: 1.6; }
+
+.text-meta {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+}
+
+/* -----------------------------------------------------------------------------
+   4. BUTTONS (pill-shaped)
+----------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-4) var(--s-8);
+  border-radius: var(--r-full);
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.25s ease, background 0.25s ease;
+  border: 0;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+/* Primary: animated neon gradient with strong glow */
+.btn-primary {
+  background: var(--gradient-neon);
+  background-size: 200% 200%;
+  color: var(--surface-dim);
+  font-weight: 600;
+  box-shadow:
+    var(--glow-md),
+    0 8px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: gradient-pan 6s ease-in-out infinite;
+}
+.btn-primary:hover {
+  box-shadow:
+    var(--glow-lg),
+    0 12px 32px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.btn-primary::after {
+  /* light streak overlay */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: light-streak 4s ease-in-out infinite;
+}
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes light-streak {
+  0%, 100% { transform: translateX(-100%); }
+  50%      { transform: translateX(100%); }
+}
+
+/* Glass secondary */
+.btn-glass {
+  background: rgba(91, 184, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  color: var(--on-surface);
+  box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.15);
+}
+.btn-glass:hover {
+  background: rgba(91, 184, 255, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.30), var(--glow-sm);
+}
+
+/* Tertiary text */
+.btn-text {
+  color: var(--primary);
+  padding: var(--s-4) var(--s-2);
+  background: transparent;
+}
+.btn-text:hover { color: var(--primary-bright); text-shadow: 0 0 12px rgba(143, 209, 255, 0.6); }
+
+/* -----------------------------------------------------------------------------
+   5. CARDS
+----------------------------------------------------------------------------- */
+.card {
+  background: var(--surface-container);
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+.card::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.10);
+  pointer-events: none;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* Glow card — extra neon */
+.card-glow {
+  background: linear-gradient(180deg, var(--surface-container-high) 0%, var(--surface-container) 100%);
+  box-shadow: var(--glow-md), inset 0 0 0 1px rgba(91, 184, 255, 0.20);
+}
+.card-glow:hover { box-shadow: var(--glow-lg), inset 0 0 0 1px rgba(91, 184, 255, 0.35); }
+
+/* Frequency poster card with animated border */
+.poster {
+  position: relative;
+  background: var(--surface-container);
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.25s;
+  cursor: pointer;
+}
+.poster::before {
+  /* Animated gradient border */
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(91, 184, 255, 0.5) 25%,
+    rgba(143, 209, 255, 0.8) 50%,
+    rgba(91, 184, 255, 0.5) 75%,
+    transparent 100%
+  );
+  background-size: 300% 300%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  animation: border-flow 4s linear infinite;
+  pointer-events: none;
+}
+.poster::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 32px rgba(91, 184, 255, 0.0);
+  transition: box-shadow 0.3s;
+  pointer-events: none;
+}
+.poster:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--glow-md);
+}
+.poster:hover::after {
+  box-shadow: inset 0 0 64px rgba(91, 184, 255, 0.15);
+}
+
+@keyframes border-flow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+/* -----------------------------------------------------------------------------
+   6. GLASS NAV
+----------------------------------------------------------------------------- */
+.glass-nav {
+  background: rgba(31, 31, 35, 0.55);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-radius: var(--r-full);
+  box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.10);
+  padding: var(--s-3) var(--s-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: var(--s-4);
+  z-index: 100;
+}
+
+/* -----------------------------------------------------------------------------
+   7. EFFECTS
+----------------------------------------------------------------------------- */
+
+/* Pulsing dot — for "LIVE" or status indicators */
+.dot-pulse {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary-bright);
+  box-shadow: 0 0 12px var(--primary-bright);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* Animated light sweep across hero */
+.light-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.light-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(91, 184, 255, 0.12), transparent);
+  animation: sweep 8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sweep {
+  0%   { left: -100%; }
+  60%  { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* Grid lines background pattern — futuristic floor */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(91, 184, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91, 184, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center;
+}
+
+/* Number with gradient — the hero "Hz" digits */
+.num-hz {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  background: var(--gradient-neon);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 28px rgba(91, 184, 255, 0.4));
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+/* Eyebrow badge — small uppercase pill */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-4);
+  background: rgba(91, 184, 255, 0.10);
+  border: 0;
+  border-radius: var(--r-full);
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--primary-bright);
+  text-shadow: 0 0 16px rgba(143, 209, 255, 0.4);
+}
+
+/* Badge "NEW" or status */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--r-full);
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tertiary);
+  background: rgba(143, 209, 255, 0.10);
+  border: 0;
+  text-shadow: 0 0 8px rgba(143, 209, 255, 0.3);
+}
+
+/* "Most chosen" pulse */
+.badge-hot {
+  background: var(--gradient-neon-static);
+  color: var(--surface-dim);
+  text-shadow: none;
+  font-weight: 600;
+  animation: hot-pulse 2.5s ease-in-out infinite;
+}
+@keyframes hot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(91, 184, 255, 0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(91, 184, 255, 0); }
+}
+
+/* Marquee-style ticker (use for "ON AIR" + frequency counter) */
+.ticker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-family: 'Space Grotesk', monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary-bright);
+}
+
+/* Subtle glitch on hover (for h1) */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch:hover::before,
+.glitch:hover::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.glitch:hover::before {
+  color: var(--primary);
+  transform: translate(-2px, 0);
+  animation: glitch-1 0.3s steps(2, end) infinite;
+}
+.glitch:hover::after {
+  color: var(--tertiary);
+  transform: translate(2px, 0);
+  animation: glitch-2 0.3s steps(2, end) infinite;
+}
+@keyframes glitch-1 {
+  0% { clip-path: inset(40% 0 60% 0); }
+  100% { clip-path: inset(60% 0 30% 0); }
+}
+@keyframes glitch-2 {
+  0% { clip-path: inset(20% 0 70% 0); }
+  100% { clip-path: inset(70% 0 10% 0); }
+}
+
+/* -----------------------------------------------------------------------------
+   8. UTILITIES
+----------------------------------------------------------------------------- */
+.lede {
+  font-size: clamp(17px, 1.6vw, 20px);
+  color: var(--on-surface-variant);
+  max-width: 640px;
+  line-height: 1.55;
+}
+
+.section { padding: var(--s-16) 0; position: relative; }
+.section-header { margin-bottom: var(--s-10); }
+
+.muted { color: var(--on-surface-variant); }
+.dim   { opacity: 0.7; }
+
+.center { text-align: center; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+
+/* Stack helpers */
+.stack-2 > * + * { margin-top: var(--s-2); }
+.stack-3 > * + * { margin-top: var(--s-3); }
+.stack-4 > * + * { margin-top: var(--s-4); }
+.stack-6 > * + * { margin-top: var(--s-6); }
+
+/* Container */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--s-6);
+}
+
+/* -----------------------------------------------------------------------------
+   9. RESPONSIVE
+----------------------------------------------------------------------------- */
+@media (max-width: 880px) {
+  .hide-mobile { display: none !important; }
+}
+@media (min-width: 881px) {
+  .show-mobile { display: none !important; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -20,144 +20,238 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
 
   <style>
-    /* =============================================================
-       RULIO — The Frequency Room
-       Design system adapted from "The Digital Projectionist"
-       Pitch-black depths + electric blue neon, no borders, glassmorphism
-       ============================================================= */
+    /* ============================================================
+       RULIO — The Frequency Room (FLASH EDITION)
+       Inlined here for standalone deployment. Same tokens as engine's
+       globals.css. Engine pages use @import from app/globals.css.
+       ============================================================ */
 
-    /* --- Design tokens (Rulio palette) --- */
     :root {
-      /* Surfaces — pitch black + tonal layers */
-      --surface-dim:           #0c0c0e;   /* page background, "black hole" */
-      --surface-lowest:        #08080a;   /* deepest background */
-      --surface-low:           #131316;   /* section background */
-      --surface:               #18181c;   /* mid background */
-      --surface-container:     #1f1f23;   /* main content cards */
-      --surface-container-high: #2a2a2f;  /* elevated cards */
-      --surface-container-highest: #353539; /* top-level floating panels */
-      --surface-variant:       #2a2a2f;   /* glass base */
+      --surface-dim: #0c0c0e;
+      --surface-lowest: #08080a;
+      --surface-low: #131316;
+      --surface: #18181c;
+      --surface-container: #1f1f23;
+      --surface-container-high: #2a2a2f;
+      --surface-container-highest: #353539;
+      --surface-variant: #2a2a2f;
 
-      /* Brand neons — Rulio blue + cyan */
-      --primary:        #5BB8FF;   /* electric blue */
-      --primary-bright: #8FD1FF;   /* cyan accent */
-      --primary-deep:   #2a8ed6;   /* depth */
-      --tertiary:       #8FD1FF;   /* success/new */
+      --primary: #5BB8FF;
+      --primary-bright: #8FD1FF;
+      --primary-deep: #2a8ed6;
+      --primary-ultra: #00B4FF;
+      --tertiary: #8FD1FF;
 
-      /* Text */
-      --on-surface:        #F4F1EA;   /* warm off-white primary */
-      --on-surface-variant: #a1a1aa;  /* muted secondary */
+      --on-surface: #F4F1EA;
+      --on-surface-variant: #a1a1aa;
 
-      /* Gradient — primary to primary-bright (was pink→magenta, now blue→cyan) */
-      --gradient-neon: linear-gradient(135deg, #2a8ed6 0%, #5BB8FF 50%, #8FD1FF 100%);
+      --gradient-neon: linear-gradient(135deg, #00B4FF 0%, #5BB8FF 35%, #8FD1FF 70%, #00B4FF 100%);
+      --gradient-neon-static: linear-gradient(135deg, #2a8ed6 0%, #5BB8FF 50%, #8FD1FF 100%);
 
-      /* Outline (fallback only — no borders in normal flow) */
-      --outline-variant: rgba(91, 184, 255, 0.20);
+      --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+      --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-20: 80px; --s-24: 96px;
 
-      /* Spacing scale (M3 4-pt) */
-      --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
-      --s-5: 20px;  --s-6: 24px;  --s-8: 32px;  --s-10: 40px;
-      --s-12: 48px; --s-16: 64px; --s-20: 80px; --s-24: 96px;
+      --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-xl: 28px; --r-full: 9999px;
 
-      /* Radius */
-      --r-sm: 8px;  --r-md: 12px; --r-lg: 20px; --r-full: 9999px;
+      --glow-sm:  0 0 16px rgba(91, 184, 255, 0.30);
+      --glow-md:  0 0 32px rgba(91, 184, 255, 0.40);
+      --glow-lg:  0 0 64px rgba(91, 184, 255, 0.50);
+      --glow-xl:  0 0 96px rgba(91, 184, 255, 0.55);
     }
 
-    /* --- Reset --- */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+
     body {
       background: var(--surface-dim);
       color: var(--on-surface);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       font-size: 16px;
       line-height: 1.5;
       min-height: 100vh;
       overflow-x: hidden;
+      position: relative;
     }
-    a { color: inherit; text-decoration: none; }
-    button { font-family: inherit; border: 0; cursor: pointer; background: none; color: inherit; }
 
-    /* --- Background atmosphere (ambient glows, not borders) --- */
+    /* === ATMOSPHERE === */
     body::before {
       content: '';
-      position: fixed; inset: 0;
+      position: fixed; inset: -20%;
       background:
-        radial-gradient(ellipse 800px 600px at 15% 0%, rgba(91, 184, 255, 0.12), transparent 60%),
-        radial-gradient(ellipse 600px 800px at 85% 100%, rgba(143, 209, 255, 0.08), transparent 60%);
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(0, 180, 255, 0.18), transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 90%, rgba(91, 184, 255, 0.14), transparent 60%),
+        radial-gradient(ellipse 40% 40% at 60% 50%, rgba(143, 209, 255, 0.08), transparent 60%);
+      animation: aurora 22s ease-in-out infinite alternate;
       pointer-events: none;
       z-index: 0;
     }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: repeating-linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.012) 0px,
+        rgba(255, 255, 255, 0.012) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: overlay;
+    }
+    @keyframes aurora {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(2%, -2%) scale(1.05); }
+      100% { transform: translate(-2%, 1%) scale(1.02); }
+    }
 
-    /* --- Layout --- */
-    main { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 var(--s-6); }
+    main { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: 0 var(--s-6); }
 
-    /* --- Top nav (glassmorphic pill, floating) --- */
+    /* === NAV === */
     .top-nav {
       position: sticky; top: var(--s-4); z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       margin: var(--s-4) auto var(--s-12);
       max-width: 1200px;
       padding: var(--s-3) var(--s-5);
-      background: rgba(31, 31, 35, 0.6);
-      backdrop-filter: blur(24px) saturate(140%);
-      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      background: rgba(31, 31, 35, 0.55);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
       border-radius: var(--r-full);
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.10);
     }
     .brand {
-      display: flex; align-items: center; gap: var(--s-2);
+      display: flex; align-items: center; gap: var(--s-3);
       font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700; font-size: 16px; letter-spacing: 0.02em;
+      font-weight: 700; font-size: 16px;
     }
     .brand-mark {
       width: 28px; height: 28px;
       background: var(--gradient-neon);
+      background-size: 200% 200%;
       border-radius: var(--r-sm);
-      box-shadow: 0 0 24px rgba(91, 184, 255, 0.4);
+      box-shadow: 0 0 24px rgba(91, 184, 255, 0.5);
+      animation: shimmer 6s ease-in-out infinite;
+      position: relative;
     }
-    .nav-links { display: flex; gap: var(--s-6); }
+    .brand-mark::after {
+      content: '';
+      position: absolute; inset: 4px;
+      background: var(--surface-dim);
+      border-radius: 4px;
+    }
+    .nav-links { display: flex; gap: var(--s-6); align-items: center; }
     .nav-links a {
       font-size: 14px; color: var(--on-surface-variant);
-      transition: color 0.2s;
+      transition: color 0.2s, text-shadow 0.2s;
     }
-    .nav-links a:hover { color: var(--on-surface); }
+    .nav-links a:hover {
+      color: var(--on-surface);
+      text-shadow: 0 0 12px rgba(143, 209, 255, 0.6);
+    }
+    .nav-ticker {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--primary-bright);
+      padding: 6px 12px;
+      background: rgba(143, 209, 255, 0.05);
+      border-radius: var(--r-full);
+    }
+    .dot-pulse {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--primary-bright);
+      box-shadow: 0 0 12px var(--primary-bright);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(0.85); }
+    }
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
 
-    /* --- Hero --- */
+    /* === HERO === */
     .hero {
       padding: var(--s-20) 0 var(--s-16);
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    .hero .eyebrow {
-      display: inline-block;
+    .hero::before {
+      /* radial spotlight behind the headline */
+      content: '';
+      position: absolute;
+      top: 30%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(91, 184, 255, 0.20), transparent 60%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .hero::after {
+      /* light sweep */
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(91, 184, 255, 0.10), transparent);
+      animation: sweep 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes sweep {
+      0%   { left: -100%; }
+      60%  { left: 100%; }
+      100% { left: 100%; }
+    }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      padding: var(--s-2) var(--s-4);
+      background: rgba(91, 184, 255, 0.10);
+      border-radius: var(--r-full);
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 12px; font-weight: 500;
+      font-size: 11px; font-weight: 500;
       letter-spacing: 0.3em; text-transform: uppercase;
       color: var(--primary-bright);
-      padding: var(--s-2) var(--s-4);
-      background: rgba(91, 184, 255, 0.08);
-      border-radius: var(--r-full);
+      text-shadow: 0 0 16px rgba(143, 209, 255, 0.4);
       margin-bottom: var(--s-6);
     }
-    .hero h1 {
+    .eyebrow .dot-pulse { width: 6px; height: 6px; }
+
+    h1.hero-title {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 500;
-      font-size: clamp(48px, 8vw, 96px);
-      line-height: 1.0;
-      letter-spacing: -0.03em;
+      font-size: clamp(48px, 8vw, 104px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
       margin-bottom: var(--s-6);
     }
-    .hero h1 em {
+    .accent {
       font-style: italic;
       background: var(--gradient-neon);
-      -webkit-background-clip: text; background-clip: text;
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
       color: transparent;
+      animation: shimmer 8s ease-in-out infinite;
+      filter: drop-shadow(0 0 28px rgba(91, 184, 255, 0.45));
+      display: inline-block;
     }
-    .hero p.lede {
+    .lede {
       font-size: clamp(17px, 1.6vw, 20px);
       color: var(--on-surface-variant);
       max-width: 640px;
@@ -165,7 +259,7 @@
       line-height: 1.55;
     }
 
-    /* --- CTA pill buttons --- */
+    /* === CTA buttons === */
     .cta-row { display: flex; gap: var(--s-4); justify-content: center; flex-wrap: wrap; }
     .btn {
       display: inline-flex; align-items: center; gap: var(--s-2);
@@ -174,31 +268,88 @@
       font-family: 'Space Grotesk', sans-serif;
       font-size: 15px; font-weight: 500;
       letter-spacing: 0.02em;
-      transition: transform 0.15s, box-shadow 0.2s;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.25s ease;
+      border: 0;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
     }
-    .btn:hover { transform: translateY(-1px); }
+    .btn:hover { transform: translateY(-2px); }
+
     .btn-primary {
       background: var(--gradient-neon);
+      background-size: 200% 200%;
       color: var(--surface-dim);
-      box-shadow: 0 0 32px rgba(91, 184, 255, 0.35), 0 8px 24px rgba(0, 0, 0, 0.4);
+      font-weight: 600;
+      box-shadow:
+        0 0 32px rgba(91, 184, 255, 0.45),
+        0 8px 24px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      animation: shimmer 6s ease-in-out infinite;
     }
     .btn-primary:hover {
-      box-shadow: 0 0 48px rgba(91, 184, 255, 0.5), 0 12px 32px rgba(0, 0, 0, 0.5);
+      box-shadow:
+        0 0 56px rgba(91, 184, 255, 0.65),
+        0 12px 32px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
-    .btn-glass {
-      background: rgba(91, 184, 255, 0.06);
-      backdrop-filter: blur(20px);
-      color: var(--on-surface);
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.30) 50%, transparent 70%);
+      transform: translateX(-100%);
+      animation: streak 4s ease-in-out infinite;
     }
-    .btn-glass:hover { background: rgba(91, 184, 255, 0.12); }
-    .btn-text {
-      color: var(--primary);
-      padding: var(--s-4) var(--s-2);
+    @keyframes streak {
+      0%, 100% { transform: translateX(-100%); }
+      50%      { transform: translateX(100%); }
     }
-    .btn-text:hover { color: var(--primary-bright); }
 
-    /* --- Section header --- */
-    .section { padding: var(--s-16) 0; }
+    .btn-glass {
+      background: rgba(91, 184, 255, 0.08);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      color: var(--on-surface);
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.20);
+    }
+    .btn-glass:hover {
+      background: rgba(91, 184, 255, 0.15);
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.40), 0 0 24px rgba(91, 184, 255, 0.25);
+    }
+
+    /* === MARQUEE TICKER === */
+    .ticker-bar {
+      display: flex;
+      gap: var(--s-12);
+      padding: var(--s-4) 0;
+      margin: var(--s-12) 0;
+      overflow: hidden;
+      border-top: 1px solid rgba(91, 184, 255, 0.08);
+      border-bottom: 1px solid rgba(91, 184, 255, 0.08);
+      mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+    }
+    .ticker-track {
+      display: flex;
+      gap: var(--s-12);
+      animation: ticker 35s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-track span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--on-surface-variant);
+    }
+    .ticker-track .hot { color: var(--primary-bright); text-shadow: 0 0 12px rgba(143, 209, 255, 0.5); }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* === SECTIONS === */
+    .section { padding: var(--s-16) 0; position: relative; }
     .section-header {
       display: flex; align-items: end; justify-content: space-between;
       gap: var(--s-6);
@@ -207,9 +358,9 @@
     .section-header h2 {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 500;
-      font-size: clamp(32px, 4vw, 48px);
+      font-size: clamp(32px, 4.5vw, 56px);
       letter-spacing: -0.02em;
-      line-height: 1.1;
+      line-height: 1.05;
     }
     .section-header p {
       color: var(--on-surface-variant);
@@ -217,7 +368,7 @@
       font-size: 15px;
     }
 
-    /* --- 9-frequency poster grid (intentional asymmetry: 1 hero + 8 small) --- */
+    /* === FREQUENCY POSTER GRID === */
     .frequency-grid {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr;
@@ -225,92 +376,143 @@
       gap: var(--s-4);
       min-height: 720px;
     }
-    .freq-card {
+    .poster {
       position: relative;
+      background: var(--surface-container);
       border-radius: var(--r-lg);
       padding: var(--s-6);
-      background: var(--surface-container);
       overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, box-shadow 0.25s;
       cursor: pointer;
     }
-    .freq-card::after {
-      /* subtle inner glow (1px inset primary at 10%) */
+    .poster::before {
+      /* Animated gradient border */
       content: '';
       position: absolute; inset: 0;
       border-radius: inherit;
-      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.10);
+      padding: 1px;
+      background: linear-gradient(135deg, transparent 0%, rgba(91, 184, 255, 0.5) 25%, rgba(143, 209, 255, 0.9) 50%, rgba(91, 184, 255, 0.5) 75%, transparent 100%);
+      background-size: 300% 300%;
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      animation: border-flow 4s linear infinite;
       pointer-events: none;
     }
-    .freq-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    .poster::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 32px rgba(91, 184, 255, 0);
+      transition: box-shadow 0.3s;
+      pointer-events: none;
     }
-    .freq-card .hz {
+    .poster:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 0 32px rgba(91, 184, 255, 0.4);
+    }
+    .poster:hover::after {
+      box-shadow: inset 0 0 64px rgba(91, 184, 255, 0.18);
+    }
+    @keyframes border-flow {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    .poster .hz {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
       font-size: 56px;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
+      line-height: 0.9;
       background: var(--gradient-neon);
-      -webkit-background-clip: text; background-clip: text;
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
       color: transparent;
-      line-height: 1;
+      filter: drop-shadow(0 0 20px rgba(91, 184, 255, 0.4));
+      animation: shimmer 8s ease-in-out infinite;
     }
-    .freq-card .name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 500;
-      font-size: 18px;
-      margin-top: var(--s-2);
-    }
-    .freq-card .meta {
-      font-size: 12px;
-      letter-spacing: 0.15em;
+    .poster .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--on-surface-variant);
       margin-top: var(--s-2);
     }
-    .freq-card .use {
+    .poster .name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      margin-top: var(--s-3);
+    }
+    .poster .use {
       margin-top: var(--s-4);
       font-size: 14px;
       color: var(--on-surface-variant);
-      line-height: 1.5;
+      line-height: 1.55;
     }
-    /* hero card spans 2 rows on left */
-    .freq-card.hero {
+    .poster.hero-card {
       grid-row: span 3;
       background: linear-gradient(180deg, var(--surface-container-high) 0%, var(--surface-container) 100%);
     }
-    .freq-card.hero .hz { font-size: 120px; }
-    .freq-card.hero .name { font-size: 32px; margin-top: var(--s-4); }
-    .freq-card.hero .use { font-size: 16px; max-width: 80%; }
+    .poster.hero-card .hz { font-size: 140px; }
+    .poster.hero-card .name { font-size: 32px; margin-top: var(--s-4); }
+    .poster.hero-card .use { font-size: 16px; max-width: 80%; }
 
-    /* --- Featured Sessions carousel-style row (film-strip metaphor) --- */
-    .featured-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--s-4);
-    }
+    /* === FEATURED SESSIONS === */
+    .featured-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
     .session-card {
       padding: var(--s-6);
       background: var(--surface-container);
       border-radius: var(--r-lg);
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
     }
-    .session-card:hover { transform: scale(1.02); }
-    .session-card .badge {
+    .session-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.12);
+      pointer-events: none;
+    }
+    .session-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 32px rgba(91, 184, 255, 0.30);
+    }
+    .badge {
       display: inline-block;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 10px; font-weight: 500;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--tertiary);
       padding: 4px 10px;
-      background: rgba(143, 209, 255, 0.08);
       border-radius: var(--r-full);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--tertiary);
+      background: rgba(143, 209, 255, 0.12);
+      text-shadow: 0 0 12px rgba(143, 209, 255, 0.4);
       margin-bottom: var(--s-3);
+    }
+    .badge-hot {
+      background: var(--gradient-neon-static);
+      color: var(--surface-dim);
+      text-shadow: none;
+      font-weight: 600;
+      animation: hot-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes hot-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(91, 184, 255, 0.4); }
+      50%      { box-shadow: 0 0 0 10px rgba(91, 184, 255, 0); }
     }
     .session-card h3 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 22px; font-weight: 500;
+      font-size: 22px;
+      font-weight: 500;
       margin-bottom: var(--s-2);
     }
     .session-card p {
@@ -319,72 +521,19 @@
     }
     .session-card .play {
       display: inline-flex; align-items: center; gap: var(--s-2);
-      font-size: 13px;
-      color: var(--primary);
+      font-size: 13px; color: var(--primary);
     }
     .session-card .play::before {
       content: '';
-      width: 24px; height: 24px;
+      width: 22px; height: 22px;
       background: var(--gradient-neon);
-      border-radius: var(--r-full);
-      box-shadow: 0 0 16px rgba(91, 184, 255, 0.4);
+      background-size: 200% 200%;
+      border-radius: 50%;
+      box-shadow: 0 0 16px rgba(91, 184, 255, 0.5);
+      animation: shimmer 6s ease-in-out infinite;
     }
 
-    /* --- Free vs Pro pricing --- */
-    .pricing {
-      background: var(--surface-low);
-      border-radius: var(--r-lg);
-      padding: var(--s-12);
-    }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--s-6);
-      margin-top: var(--s-8);
-    }
-    .price-card {
-      padding: var(--s-8);
-      background: var(--surface-container);
-      border-radius: var(--r-lg);
-    }
-    .price-card.featured {
-      background: linear-gradient(180deg, var(--surface-container-highest) 0%, var(--surface-container) 100%);
-      box-shadow: 0 0 64px rgba(91, 184, 255, 0.15);
-    }
-    .price-card .name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14px; font-weight: 500;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--on-surface-variant);
-    }
-    .price-card .cost {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 64px; font-weight: 500;
-      letter-spacing: -0.03em;
-      line-height: 1;
-      margin: var(--s-4) 0 var(--s-2);
-    }
-    .price-card .cost small {
-      font-size: 16px; font-weight: 400;
-      color: var(--on-surface-variant);
-    }
-    .price-card ul {
-      list-style: none;
-      margin: var(--s-6) 0;
-    }
-    .price-card li {
-      padding: var(--s-3) 0;
-      font-size: 14px;
-      color: var(--on-surface);
-    }
-    .price-card li::before {
-      content: '— ';
-      color: var(--primary);
-    }
-    .price-card li.muted::before { color: var(--on-surface-variant); }
-    .price-card li.muted { color: var(--on-surface-variant); }
-
-    /* --- Testimonial (poster style) --- */
+    /* === TESTIMONIAL === */
     .testimonial {
       max-width: 720px;
       margin: 0 auto;
@@ -402,16 +551,85 @@
     .testimonial blockquote em {
       font-style: italic;
       color: var(--primary-bright);
+      text-shadow: 0 0 20px rgba(143, 209, 255, 0.4);
     }
     .testimonial cite {
-      font-size: 13px;
-      letter-spacing: 0.15em;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--on-surface-variant);
       font-style: normal;
     }
 
-    /* --- Footer --- */
+    /* === PRICING === */
+    .pricing {
+      background: var(--surface-low);
+      border-radius: var(--r-xl);
+      padding: var(--s-12);
+      border: 1px solid rgba(91, 184, 255, 0.06);
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-6);
+      margin-top: var(--s-8);
+    }
+    .price-card {
+      padding: var(--s-8);
+      background: var(--surface-container);
+      border-radius: var(--r-lg);
+      transition: transform 0.2s, box-shadow 0.25s;
+    }
+    .price-card:hover { transform: translateY(-4px); }
+    .price-card.featured {
+      background: linear-gradient(180deg, var(--surface-container-highest) 0%, var(--surface-container) 100%);
+      box-shadow: 0 0 64px rgba(91, 184, 255, 0.20), inset 0 0 0 1px rgba(91, 184, 255, 0.15);
+    }
+    .price-card.featured:hover { box-shadow: 0 0 96px rgba(91, 184, 255, 0.30), inset 0 0 0 1px rgba(91, 184, 255, 0.25); }
+    .price-card .name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--on-surface-variant);
+    }
+    .price-card .cost {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 64px; font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: var(--s-4) 0 var(--s-2);
+      background: var(--gradient-neon);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 20px rgba(91, 184, 255, 0.35));
+      animation: shimmer 8s ease-in-out infinite;
+    }
+    .price-card .cost small {
+      font-size: 16px; font-weight: 400;
+      background: none;
+      -webkit-text-fill-color: var(--on-surface-variant);
+      color: var(--on-surface-variant);
+      filter: none;
+      animation: none;
+    }
+    .price-card ul { list-style: none; margin: var(--s-6) 0; }
+    .price-card li {
+      padding: var(--s-3) 0;
+      font-size: 14px;
+      color: var(--on-surface);
+    }
+    .price-card li::before {
+      content: '— ';
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .price-card li.muted { color: var(--on-surface-variant); }
+    .price-card li.muted::before { color: var(--on-surface-variant); }
+
+    /* === FOOTER === */
     footer {
       margin-top: var(--s-20);
       padding: var(--s-12) 0 var(--s-8);
@@ -419,29 +637,25 @@
       font-size: 13px;
       color: var(--on-surface-variant);
     }
+    footer .links { display: flex; gap: var(--s-6); justify-content: center; margin-bottom: var(--s-4); }
+    footer a:hover { color: var(--on-surface); text-shadow: 0 0 8px rgba(143, 209, 255, 0.4); }
     footer .disclaimer {
       max-width: 480px;
-      margin: var(--s-6) auto;
+      margin: var(--s-6) auto 0;
       font-size: 11px;
       line-height: 1.6;
-      color: var(--on-surface-variant);
-      opacity: 0.7;
+      opacity: 0.6;
     }
-    footer .links { display: flex; gap: var(--s-6); justify-content: center; margin-bottom: var(--s-4); }
-    footer a:hover { color: var(--on-surface); }
 
-    /* --- Mobile --- */
+    /* === MOBILE === */
     @media (max-width: 880px) {
       .nav-links { display: none; }
-      .frequency-grid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
-      }
-      .freq-card.hero { grid-row: auto; grid-column: span 2; }
-      .freq-card.hero .hz { font-size: 80px; }
+      .frequency-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .poster.hero-card { grid-row: auto; grid-column: span 2; }
+      .poster.hero-card .hz { font-size: 80px; }
       .featured-row { grid-template-columns: 1fr; }
       .pricing-grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 48px; }
+      h1.hero-title { font-size: 48px; }
     }
   </style>
 </head>
@@ -458,6 +672,7 @@
       <a href="#sessions">Sessions</a>
       <a href="#pricing">Pricing</a>
       <a href="/shop">Shop</a>
+      <span class="nav-ticker"><span class="dot-pulse"></span> ON AIR · 9 FREQ</span>
     </div>
   </nav>
 
@@ -465,14 +680,40 @@
 
     <!-- ============ HERO ============ -->
     <section class="hero">
-      <span class="eyebrow">The Frequency Room</span>
-      <h1>9 solfeggio tones.<br /><em>5 minutes each.</em></h1>
+      <span class="eyebrow"><span class="dot-pulse"></span> The Frequency Room · est. 2026</span>
+      <h1 class="hero-title">9 solfeggio tones.<br /><span class="accent">5 minutes each.</span></h1>
       <p class="lede">A private screening room for your attention. Pick your worst hour. Match it to a frequency. Run it for 5 days. Notice.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="/qi">Try 14 sessions free →</a>
         <a class="btn btn-glass" href="/pro">Engine Pro · €19/mo</a>
       </div>
     </section>
+
+    <!-- ============ MARQUEE TICKER ============ -->
+    <div class="ticker-bar">
+      <div class="ticker-track">
+        <span class="hot">● 528 Hz · the famous one</span>
+        <span>174 Hz · grounding</span>
+        <span>285 Hz · recovery</span>
+        <span>396 Hz · release guilt</span>
+        <span>417 Hz · change</span>
+        <span>639 Hz · connect</span>
+        <span>741 Hz · awaken</span>
+        <span>852 Hz · return</span>
+        <span>963 Hz · unity · sleep</span>
+        <span class="hot">● NOW PLAYING · 14 sessions live</span>
+        <span>● 528 Hz · the famous one</span>
+        <span>174 Hz · grounding</span>
+        <span>285 Hz · recovery</span>
+        <span>396 Hz · release guilt</span>
+        <span>417 Hz · change</span>
+        <span>639 Hz · connect</span>
+        <span>741 Hz · awaken</span>
+        <span>852 Hz · return</span>
+        <span>963 Hz · unity · sleep</span>
+        <span class="hot">● NOW PLAYING · 14 sessions live</span>
+      </div>
+    </div>
 
     <!-- ============ 9 FREQUENCIES ============ -->
     <section class="section" id="frequencies">
@@ -482,64 +723,63 @@
       </div>
 
       <div class="frequency-grid">
-        <!-- Hero card: 528 Hz (the famous one) -->
-        <div class="freq-card hero">
+        <div class="poster hero-card">
           <div class="hz">528</div>
           <div class="meta">Hz · the famous one</div>
           <div class="name">Repair · transformation</div>
           <div class="use">For the 3 PM wall. When focus fractures and you can't get it back. The midpoint of the solfeggio scale — used by everyone from monks to coaches.</div>
         </div>
 
-        <div class="freq-card">
+        <div class="poster">
           <div class="hz">174</div>
           <div class="meta">Hz</div>
           <div class="name">Grounding</div>
           <div class="use">For when you're scattered or anxious. Morning or before a hard meeting.</div>
         </div>
 
-        <div class="freq-card">
+        <div class="poster">
           <div class="hz">285</div>
           <div class="meta">Hz</div>
           <div class="name">Recovery</div>
           <div class="use">After injury, rest day, hard workout. Felt sense of the body.</div>
         </div>
 
-        <div class="freq-card">
+        <div class="poster">
           <div class="hz">396</div>
           <div class="meta">Hz</div>
           <div class="name">Release guilt</div>
           <div class="use">For when you're carrying something old. Evening, alone.</div>
         </div>
 
-        <div class="freq-card">
+        <div class="poster">
           <div class="hz">417</div>
           <div class="meta">Hz</div>
           <div class="name">Change</div>
           <div class="use">Transitions — new job, new city, new chapter. When something just shifted.</div>
         </div>
 
-        <div class="freq-card">
+        <div class="poster">
           <div class="hz">639</div>
           <div class="meta">Hz</div>
           <div class="name">Connect</div>
           <div class="use">Relationships, communication, harmony. Before a hard conversation.</div>
         </div>
 
-        <div class="freq-card">
+        <div class="poster">
           <div class="hz">741</div>
           <div class="meta">Hz</div>
           <div class="name">Awaken</div>
           <div class="use">Intuition, problem-solving, expression. When stuck.</div>
         </div>
 
-        <div class="freq-card">
+        <div class="poster">
           <div class="hz">852</div>
           <div class="meta">Hz</div>
           <div class="name">Return</div>
           <div class="use">Spiritual order, inner strength, perspective. When you've lost the plot.</div>
         </div>
 
-        <div class="freq-card">
+        <div class="poster">
           <div class="hz">963</div>
           <div class="meta">Hz</div>
           <div class="name">Unity</div>
@@ -564,7 +804,7 @@
         </div>
 
         <div class="session-card">
-          <span class="badge">Deep Work</span>
+          <span class="badge badge-hot">★ Most chosen</span>
           <h3>741 Hz · Awaken · 25 min</h3>
           <p>The longer session. For unbroken concentration blocks. Engineer-grade focus.</p>
           <span class="play">Play free</span>
@@ -614,7 +854,7 @@
           </div>
 
           <div class="price-card featured">
-            <div class="name" style="color: var(--primary-bright);">Engine Pro · most chosen</div>
+            <div class="name" style="color: var(--primary-bright);">Engine Pro</div>
             <div class="cost">€19<small> / mo</small></div>
             <ul>
               <li>Everything in Free</li>
