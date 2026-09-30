@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rulio Shop — Solfeggio Tools & Audio Packs</title>
+  <meta name="description" content="Direct download. 9 solfeggio cards, qi practice log, the 30-page ebook, and 14 audio sessions. No subscription required." />
+  <meta name="theme-color" content="#0c0c0e" />
+  <link rel="icon" href="https://rulio.app/rulio-favicon-256.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Rulio — The Frequency Room" />
+  <meta property="og:description" content="Direct downloads from €7. 9 solfeggio frequencies, 14 audio sessions, 30-page ebook." />
+  <meta property="og:image" content="https://rulio.app/rulio-og-card-1200x630.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --surface-dim: #0c0c0e;
+      --surface-lowest: #08080a;
+      --surface-low: #131316;
+      --surface: #18181c;
+      --surface-container: #1f1f23;
+      --surface-container-high: #2a2a2f;
+      --surface-container-highest: #353539;
+      --primary: #5BB8FF;
+      --primary-bright: #8FD1FF;
+      --primary-deep: #2a8ed6;
+      --primary-ultra: #00B4FF;
+      --tertiary: #8FD1FF;
+      --on-surface: #F4F1EA;
+      --on-surface-variant: #a1a1aa;
+      --gradient-neon: linear-gradient(135deg, #00B4FF 0%, #5BB8FF 35%, #8FD1FF 70%, #00B4FF 100%);
+      --gradient-neon-static: linear-gradient(135deg, #2a8ed6 0%, #5BB8FF 50%, #8FD1FF 100%);
+      --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-20: 80px;
+      --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-full: 9999px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body {
+      background: var(--surface-dim);
+      color: var(--on-surface);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: -20%;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(0, 180, 255, 0.18), transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 90%, rgba(91, 184, 255, 0.14), transparent 60%),
+        radial-gradient(ellipse 40% 40% at 60% 50%, rgba(143, 209, 255, 0.08), transparent 60%);
+      animation: aurora 22s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.012) 0px, rgba(255, 255, 255, 0.012) 1px, transparent 1px, transparent 3px);
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: overlay;
+    }
+    @keyframes aurora {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(2%, -2%) scale(1.05); }
+      100% { transform: translate(-2%, 1%) scale(1.02); }
+    }
+    main { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 0 var(--s-6); }
+
+    /* === NAV (glassmorphic pill) === */
+    .top-nav {
+      position: sticky; top: var(--s-4); z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1100px;
+      margin: var(--s-4) auto var(--s-12);
+      padding: var(--s-3) var(--s-5);
+      background: rgba(31, 31, 35, 0.55);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      border-radius: var(--r-full);
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.10);
+    }
+    .brand { display: flex; align-items: center; gap: var(--s-3); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; }
+    .brand-mark {
+      width: 28px; height: 28px;
+      background: var(--gradient-neon);
+      background-size: 200% 200%;
+      border-radius: var(--r-sm);
+      box-shadow: 0 0 24px rgba(91, 184, 255, 0.5);
+      animation: shimmer 6s ease-in-out infinite;
+      position: relative;
+    }
+    .brand-mark::after { content: ''; position: absolute; inset: 4px; background: var(--surface-dim); border-radius: 4px; }
+    @keyframes shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+    .nav-links { display: flex; gap: var(--s-6); align-items: center; font-size: 14px; }
+    .nav-links a { color: var(--on-surface-variant); transition: color 0.2s, text-shadow 0.2s; }
+    .nav-links a:hover { color: var(--on-surface); text-shadow: 0 0 12px rgba(143, 209, 255, 0.6); }
+    .nav-ticker {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.15em;
+      color: var(--primary-bright);
+      padding: 6px 12px;
+      background: rgba(143, 209, 255, 0.05);
+      border-radius: var(--r-full);
+    }
+    .dot-pulse {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--primary-bright);
+      box-shadow: 0 0 12px var(--primary-bright);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+
+    /* === HERO === */
+    .hero {
+      padding: var(--s-16) 0 var(--s-12);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 30%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(91, 184, 255, 0.20), transparent 60%);
+      pointer-events: none; z-index: -1;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(91, 184, 255, 0.10), transparent);
+      animation: sweep 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes sweep { 0% { left: -100%; } 60%, 100% { left: 100%; } }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      padding: var(--s-2) var(--s-4);
+      background: rgba(91, 184, 255, 0.10);
+      border-radius: var(--r-full);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--primary-bright);
+      text-shadow: 0 0 16px rgba(143, 209, 255, 0.4);
+      margin-bottom: var(--s-6);
+    }
+    h1.hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--s-6);
+    }
+    .accent {
+      font-style: italic;
+      background: var(--gradient-neon);
+      background-size: 200% 200%;
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+      animation: shimmer 8s ease-in-out infinite;
+      filter: drop-shadow(0 0 28px rgba(91, 184, 255, 0.45));
+    }
+    .lede { font-size: clamp(16px, 1.4vw, 18px); color: var(--on-surface-variant); max-width: 600px; margin: 0 auto var(--s-10); }
+
+    /* === BUTTONS === */
+    .btn {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      padding: var(--s-4) var(--s-8);
+      border-radius: var(--r-full);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px; font-weight: 500;
+      letter-spacing: 0.02em;
+      cursor: pointer; border: 0; text-decoration: none;
+      position: relative; overflow: hidden;
+      transition: transform 0.18s, box-shadow 0.25s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--gradient-neon);
+      background-size: 200% 200%;
+      color: var(--surface-dim); font-weight: 600;
+      box-shadow: 0 0 32px rgba(91, 184, 255, 0.45), 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      animation: shimmer 6s ease-in-out infinite;
+    }
+    .btn-primary::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.30) 50%, transparent 70%);
+      transform: translateX(-100%);
+      animation: streak 4s ease-in-out infinite;
+    }
+    @keyframes streak { 0%, 100% { transform: translateX(-100%); } 50% { transform: translateX(100%); } }
+    .btn-glass {
+      background: rgba(91, 184, 255, 0.08);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      color: var(--on-surface);
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.20);
+    }
+    .btn-glass:hover { background: rgba(91, 184, 255, 0.15); box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.40), 0 0 24px rgba(91, 184, 255, 0.25); }
+
+    /* === PRODUCT CARDS (animated gradient borders) === */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--s-4);
+      padding-bottom: var(--s-12);
+    }
+    .card {
+      position: relative;
+      background: var(--surface-container);
+      border-radius: var(--r-lg);
+      padding: var(--s-6);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.25s;
+      display: block;
+      color: inherit;
+    }
+    .card::before {
+      content: ''; position: absolute; inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, transparent 0%, rgba(91, 184, 255, 0.5) 25%, rgba(143, 209, 255, 0.9) 50%, rgba(91, 184, 255, 0.5) 75%, transparent 100%);
+      background-size: 300% 300%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      animation: border-flow 4s linear infinite;
+      pointer-events: none;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 0 32px rgba(91, 184, 255, 0.4); }
+    @keyframes border-flow { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+
+    .card .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--r-full);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      background: rgba(91, 184, 255, 0.10);
+      color: var(--primary-bright);
+      text-shadow: 0 0 12px rgba(143, 209, 255, 0.4);
+      margin-bottom: var(--s-3);
+    }
+    .card.featured .tag {
+      background: var(--gradient-neon-static);
+      color: var(--surface-dim);
+      text-shadow: none;
+      font-weight: 600;
+      animation: hot-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes hot-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(91, 184, 255, 0.4); }
+      50%      { box-shadow: 0 0 0 8px rgba(91, 184, 255, 0); }
+    }
+    .card.featured {
+      background: linear-gradient(180deg, var(--surface-container-highest) 0%, var(--surface-container) 100%);
+    }
+    .card .meta-row { display: flex; align-items: start; justify-content: space-between; margin-bottom: var(--s-2); }
+    .featured-mark {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--primary-bright);
+      text-shadow: 0 0 12px rgba(143, 209, 255, 0.5);
+    }
+    .card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px; font-weight: 500;
+      margin-bottom: var(--s-2);
+    }
+    .card p {
+      font-size: 14px; color: var(--on-surface-variant);
+      line-height: 1.55;
+      margin-bottom: var(--s-4);
+      min-height: 3.5em;
+    }
+    .price-row { display: flex; align-items: baseline; justify-content: space-between; }
+    .price {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px; font-weight: 500;
+      letter-spacing: -0.02em;
+      background: var(--gradient-neon);
+      background-size: 200% 200%;
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 16px rgba(91, 184, 255, 0.30));
+      animation: shimmer 8s ease-in-out infinite;
+    }
+    .price .was {
+      font-size: 14px; color: var(--on-surface-variant);
+      text-decoration: line-through;
+      text-decoration-color: var(--on-surface-variant);
+      text-decoration-thickness: 1.5px;
+      margin-left: 10px; opacity: 0.7;
+      background: none; -webkit-text-fill-color: var(--on-surface-variant);
+      filter: none; animation: none;
+    }
+    .cta-arrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--primary);
+      text-shadow: 0 0 8px rgba(91, 184, 255, 0.5);
+      transition: transform 0.2s;
+    }
+    .card:hover .cta-arrow { transform: translateX(4px); }
+
+    /* === INFO BOX === */
+    .info-box {
+      padding: var(--s-6);
+      border-radius: var(--r-lg);
+      background: var(--surface-low);
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.08);
+    }
+    .info-box h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--on-surface-variant);
+      margin-bottom: var(--s-3);
+    }
+    .info-box ul { list-style: none; font-size: 14px; color: var(--on-surface); }
+    .info-box li { padding: var(--s-2) 0; }
+    .info-box li::before { content: '— '; color: var(--primary); }
+
+    /* === TESTIMONIALS === */
+    .testimonials { margin: var(--s-12) 0; }
+    .testimonials h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--on-surface-variant);
+      text-align: center;
+      margin-bottom: var(--s-6);
+    }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--s-3);
+    }
+    .testi {
+      padding: var(--s-5);
+      border-radius: var(--r-lg);
+      background: var(--surface-container);
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.08);
+    }
+    .testi p { font-size: 14px; line-height: 1.55; color: var(--on-surface); margin-bottom: var(--s-3); }
+    .testi cite { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--on-surface-variant); font-style: normal; }
+
+    /* === EMAIL CAPTURE === */
+    .capture {
+      max-width: 560px; margin: var(--s-12) auto;
+      padding: var(--s-8);
+      background: linear-gradient(135deg, rgba(91, 184, 255, 0.10), rgba(143, 209, 255, 0.04));
+      border-radius: var(--r-lg);
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.25), 0 0 48px rgba(91, 184, 255, 0.10);
+      text-align: center;
+    }
+    .capture h3 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 500; margin-bottom: var(--s-2); }
+    .capture p { color: var(--on-surface-variant); font-size: 14px; margin-bottom: var(--s-5); }
+    .capture-form { display: flex; gap: var(--s-2); max-width: 420px; margin: 0 auto; }
+    .capture-form input[type=email] {
+      flex: 1; padding: 14px 18px; border-radius: var(--r-full);
+      background: rgba(255, 255, 255, 0.05);
+      border: 0; box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.20);
+      color: var(--on-surface); font-size: 14px; font-family: inherit;
+    }
+    .capture-form input[type=email]:focus { outline: none; box-shadow: inset 0 0 0 1px var(--primary), 0 0 16px rgba(91, 184, 255, 0.30); }
+    .capture small { display: block; margin-top: var(--s-3); color: var(--on-surface-variant); font-size: 11px; }
+
+    /* === SHARE === */
+    .share-card { max-width: 720px; margin: var(--s-12) auto; padding: var(--s-8); border-radius: var(--r-lg); background: var(--surface-low); box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.08); }
+    .share-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 500; margin-bottom: var(--s-2); }
+    .share-card > p { color: var(--on-surface-variant); font-size: 13px; margin-bottom: var(--s-6); }
+    .tweet-box {
+      padding: var(--s-4); border-radius: var(--r-md);
+      background: rgba(91, 184, 255, 0.05);
+      box-shadow: inset 0 0 0 1px dashed rgba(91, 184, 255, 0.30);
+      font-size: 14px; line-height: 1.6; color: var(--on-surface);
+      white-space: pre-wrap;
+      margin-bottom: var(--s-3);
+    }
+    .copy-row { display: flex; align-items: center; gap: var(--s-3); margin-top: var(--s-2); }
+    .copy-btn {
+      padding: 8px 14px; border-radius: var(--r-full);
+      background: rgba(91, 184, 255, 0.15);
+      box-shadow: inset 0 0 0 1px rgba(91, 184, 255, 0.30);
+      color: var(--cyan, var(--primary-bright));
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { background: rgba(91, 184, 255, 0.25); }
+    .copy-btn.copied { background: rgba(91, 255, 134, 0.20); color: #5fffaa; box-shadow: inset 0 0 0 1px rgba(91, 255, 134, 0.40); }
+
+    /* === DISCLAIMER === */
+    .disclaimer {
+      font-size: 11px; color: var(--on-surface-variant);
+      max-width: 720px; margin: var(--s-8) auto;
+      text-align: center; line-height: 1.6; opacity: 0.7;
+    }
+
+    /* === FOOTER === */
+    footer { margin-top: var(--s-12); padding: var(--s-6) 0; text-align: center; font-size: 12px; color: var(--on-surface-variant); }
+
+    /* === MOBILE === */
+    @media (max-width: 880px) {
+      .nav-links { display: none; }
+      h1.hero-title { font-size: 36px; }
+    }
+
+    /* === Hide platform branding === */
+    #minimax-floating-ball { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a class="brand" href="/">
+      <span class="brand-mark"></span>
+      <span>Rulio</span>
+    </a>
+    <div class="nav-links">
+      <a href="https://rulio.app">Home</a>
+      <a href="https://rulio.app/pro">Pro</a>
+      <a href="https://rulio.app/qi">/qi</a>
+      <span class="nav-ticker"><span class="dot-pulse"></span> 9 FREQ LIVE</span>
+      <a href="mailto:hello@rulio.io" class="btn-text" style="color: var(--on-surface-variant);">Contact</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="hero">
+      <span class="eyebrow"><span class="dot-pulse"></span> Rulio Shop · Direct downloads</span>
+      <h1 class="hero-title">The 5-minute<br /><span class="accent">solfeggio toolkit.</span></h1>
+      <p class="lede">No subscription. Buy what you need, download it, use it tonight. Not a medical device, not a treatment — a practice tool.</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a class="btn btn-primary" href="https://buy.stripe.com/dRmfZh79P2mOfB8a8Gdwc03">Buy the bundle · €49 →</a>
+        <a class="btn btn-glass" href="#products">5 products below</a>
+      </div>
+    </section>
+
+    <section class="grid" id="products">
+      <a class="card" href="https://buy.stripe.com/3cIeVdbq53qS9cKgx4dwc02" target="_blank" rel="noopener">
+        <span class="tag">Printable PDF</span>
+        <h2>9 Solfeggio Frequency Cards</h2>
+        <p>A5 + US Letter. 9 cards, 9 frequencies, one use case each. Tape them to your desk.</p>
+        <div class="price-row">
+          <div class="price">€9</div>
+          <span class="cta-arrow">Buy →</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://buy.stripe.com/8x2aEX2Tz2mO2Om94Cdwc04" target="_blank" rel="noopener">
+        <span class="tag">Printable PDF</span>
+        <h2>7-Day Qi Practice Log</h2>
+        <p>Track 5-minute sessions. State before, state after, what you noticed. 7 days.</p>
+        <div class="price-row">
+          <div class="price">€7</div>
+          <span class="cta-arrow">Buy →</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://buy.stripe.com/6oU5kD3XDbXocoW6Wudwc01" target="_blank" rel="noopener">
+        <span class="tag">30+ page PDF</span>
+        <h2>Rulio Qi Method (ebook)</h2>
+        <p>The full 5-minute protocol. Why it works, when to use each frequency, honest caveats.</p>
+        <div class="price-row">
+          <div class="price">€19</div>
+          <span class="cta-arrow">Buy →</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://buy.stripe.com/5kQ9ATfGl3qSgFc3Kidwc00" target="_blank" rel="noopener">
+        <span class="tag">110 min · 14 MP3s</span>
+        <h2>14-Day Audio Pack</h2>
+        <p>12 free 5-min + 2 extended 25-min sessions. Stereo only. All 9 frequencies.</p>
+        <div class="price-row">
+          <div class="price">€29</div>
+          <span class="cta-arrow">Buy →</span>
+        </div>
+      </a>
+
+      <a class="card featured" href="https://buy.stripe.com/dRmfZh79P2mOfB8a8Gdwc03" target="_blank" rel="noopener" style="grid-column: span 1;">
+        <div class="meta-row">
+          <span class="tag">Save €15 · 40% off</span>
+          <span class="featured-mark">★ Most chosen</span>
+        </div>
+        <h2>Complete Rulio Bundle</h2>
+        <p>All 4 products in one zip. Cards + log + ebook + 14 audio sessions. The full toolkit.</p>
+        <div class="price-row">
+          <div class="price">€49<span class="was">€64</span></div>
+          <span class="cta-arrow">Buy →</span>
+        </div>
+      </a>
+    </section>
+
+    <div class="info-box" style="margin-bottom: 32px;">
+      <h3>What you get after checkout</h3>
+      <ul>
+        <li>Secure payment via Stripe (cards, Apple Pay, Google Pay)</li>
+        <li>Instant download links sent to your email</li>
+        <li>No account, no subscription, no spam</li>
+        <li>Lifetime access to your files</li>
+      </ul>
+    </div>
+
+    <section class="testimonials">
+      <h3>What people notice</h3>
+      <div class="testi-grid">
+        <div class="testi">
+          <p>"I run the 3 PM protocol on back-to-back days. 528Hz for 5 minutes. I stop drifting."</p>
+          <cite>— Marta, founder, Lisbon</cite>
+        </div>
+        <div class="testi">
+          <p>"The cards live on my desk. Pick a frequency by feel, not by thinking. Easier than opening an app."</p>
+          <cite>— Jonas, eng manager, Berlin</cite>
+        </div>
+        <div class="testi">
+          <p>"Skeptical on day 1. By day 4 I noticed the 4 PM wall didn't happen. I'm a convert."</p>
+          <cite>— Priya, PM, London</cite>
+        </div>
+      </div>
+    </section>
+
+    <div class="capture">
+      <h3>Not ready to buy?</h3>
+      <p>Get the 5-minute solfeggio protocol — the same one I use — by email. Free.</p>
+      <form class="capture-form" action="https://engine-topaz-eight.vercel.app/pro" method="GET" target="_blank">
+        <input type="email" name="email" placeholder="you@work.email" required />
+        <button class="btn btn-primary" type="submit">Send it →</button>
+      </form>
+      <small>Free 5-min solfeggio protocol by email. No spam.</small>
+    </div>
+
+    <section class="share-card">
+      <h3>📣 Share Rulio</h3>
+      <p style="color: var(--on-surface-variant); font-size: 13px; margin: 0 0 20px;">If you've tried it and it works, here's copy you can paste anywhere.</p>
+      <div class="tweet-box">I built Rulio because I burned out twice in my 30s. 5 min a day. One frequency. The 3 PM wall doesn't happen anymore. 14 sessions free, full toolkit €49 → https://buy.stripe.com/dRmfZh79P2mOfB8a8Gdwc03</div>
+      <div class="copy-row">
+        <button class="copy-btn" onclick="copyText(this, 'I built Rulio because I burned out twice in my 30s. 5 min a day. One frequency. The 3 PM wall doesn\\'t happen anymore. 14 sessions free, full toolkit €49 → https://buy.stripe.com/dRmfZh79P2mOfB8a8Gdwc03')">Copy tweet</button>
+        <a class="copy-btn" href="https://twitter.com/intent/tweet?text=I%20built%20Rulio%20because%20I%20burned%20out%20twice%20in%20my%2030s.%205%20min%20a%20day.%20One%20frequency.%20The%203%20PM%20wall%20doesn%27t%20happen%20anymore.%2014%20sessions%20free%2C%20full%20toolkit%20%E2%82%AC49%20%E2%86%92%20https%3A%2F%2Fbuy.stripe.com%2FdRmfZh79P2mOfB8a8Gdwc03" target="_blank" rel="noopener">Tweet →</a>
+      </div>
+      <div class="tweet-box" style="margin-top: 24px;">Two years ago I burned out. Twice in 18 months. The thing that fixed it wasn't therapy or meditation. It was a 5-minute audio practice with a specific frequency. I built Rulio so anyone can do the same. 14 free sessions at rulio.app/qi. — Roel, Brussels</div>
+      <div class="copy-row">
+        <button class="copy-btn" onclick="copyText(this, 'Two years ago I burned out. Twice in 18 months. The thing that fixed it wasn\\'t therapy or meditation. It was a 5-minute audio practice with a specific frequency. I built Rulio so anyone can do the same. 14 free sessions at rulio.app/qi. — Roel, Brussels')">Copy post</button>
+        <a class="copy-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuy.stripe.com%2FdRmfZh79P2mOfB8a8Gdwc03" target="_blank" rel="noopener">Share on LinkedIn →</a>
+      </div>
+    </section>
+
+    <p class="disclaimer">
+      Not a medical device. Not a treatment for any condition. Solfeggio frequencies are a relaxation and focus tool, used the same way music is used. If you have a serious condition, see a professional.
+    </p>
+
+    <footer>
+      © 2026 Rulio Studio · Brussels · Roel Janssens
+    </footer>
+
+  </main>
+
+  <script>
+    function copyText(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.textContent;
+        btn.textContent = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); btn.textContent = '✓ Copied'; } catch(e) {}
+        document.body.removeChild(ta);
+      });
+    }
+  </script>
+</body>
+</html>

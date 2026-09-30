@@ -71,8 +71,10 @@ dist-landing/
 dist-partnership/
 dist-press-kit/
 dist-ruliosolutions/
-dist-shop/
 dist-workshop/
+dist-shop/_assets/
+dist-shop/.vercel/
+!dist-shop/index.html
 dist-*/_assets/
 dist-*/.vercel/
 
